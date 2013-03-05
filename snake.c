@@ -1,7 +1,7 @@
 /* Ascii Snake 
  * Version: 0.4
  * Released under the GNU GPL
- * Noah Menzi
+ * sevenonlinez
  */ 
 
 #include <stdio.h>
@@ -19,7 +19,6 @@
 /* #define KEY_MOVE_LEFT 97 */
 /* #define KEY_MOVE_DOWN 115 */
 /* #define KEY_MOVE_RIGHT 100 */
-
 
 // Variabeln
 char playfield[1000][1000];
@@ -211,9 +210,6 @@ void del_first() {  //Um das 1. Element der Liste zu löschen
   
 }
 
-// ----------------------------------------------
-// copy-paste part
-
 /*Altes Terminal wiederherstellen */
 static struct termios BACKUP_TTY;
 
@@ -253,12 +249,6 @@ static int restore_tty (int fd) {
     return -1;
   return 0;
 }
-
-
-
-// copy - past part
-// ----------------------------------------------
-
 
 
 void x_move(int richtung) {    // 0: Minux  1: Plus
