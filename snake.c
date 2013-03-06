@@ -13,13 +13,6 @@
 #include <pthread.h>  // gcc  -pthread
 #include <term.h>
 
-/* #define PLUS 1; */
-/* #define MINUS -1; */
-/* #define KEY_MOVE_UP 119 */
-/* #define KEY_MOVE_LEFT 97 */
-/* #define KEY_MOVE_DOWN 115 */
-/* #define KEY_MOVE_RIGHT 100 */
-
 // Variabeln
 char playfield[1000][1000];
 int hindernis_check=0; /* bool 0: keine Hindernis generieren \
