@@ -3,7 +3,6 @@
  * Released under the GNU GPL
  * sevenonlinez
  */ 
-//test
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +27,8 @@ int main (int argc, char *argv[]) {
     printf("To big terminal size!!\n");
     return EXIT_FAILURE;
   }
+
+  int *array; //calloc(len_zahl,sizeof(int));
   
   if(argc==1) {
     set_geschwindigkeit(5);
