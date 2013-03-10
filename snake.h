@@ -15,7 +15,23 @@ extern int sync_del_special_point; /* bool 0: '$' wurde nich erwischt
 
 /* int sync_blinken; /\* synchronisiere special point blinken. *\/  */
 
+struct snake {
+  int xachse;
+  int yachse;
+  struct snake *next; 
+  struct snake *previous;
+  };
+
+struct koordinaten {
+  int x;
+  int y;
+};
+
 extern struct koordinaten arg;
+
+extern struct snake *anfang;
+extern struct snake *next;
+extern struct snake *ende;
 
 void anhaengen(int xachse, int yachse);
 void snake_create_playground();

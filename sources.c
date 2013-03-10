@@ -9,170 +9,14 @@
 #include "snake.h"
 
 // Variabeln
-char playfield[1000][1000];
-int hindernis_check=0; /* bool 0: keine Hindernis generieren \
-			* 1: Hindernis generieren */
-int check;  /* bool 0: kein * getroffen, 1: * getroffen -> führe nicht \
-	     * del(first) aus. */
-char eingabe; // richtungseingabe
-int geschwindigkeit=70000; 
-int len_x=80;
-int len_y=24;
-int score;
-int level;
 
 int sync_del_special_point; /* bool 0: '$' wurde nich erwischt
 			       1: '$' wurde erwischt, lösche pos($) nicht */
-
-/* int sync_blinken; /\* synchronisiere special point blinken. *\/  */
-
-// int special_point_active;  /* bool: 0: nicht active
-//			      1: active  */
-
-struct koordinaten {
-  int x;
-  int y;
-};
-
-struct koordinaten arg;
-
-
-struct snake {
-  int xachse;
-  int yachse;
-  struct snake *next;
-  struct snake *previous;
-};
 
 struct snake *anfang=NULL;
 struct snake *next = NULL;
 struct snake *ende=NULL;
 
-void anhaengen(int xachse, int yachse) {
-  
-  struct snake *zeiger, *zeiger1;
-  
-  /* Wurde schon Speicher für den ende-Zeiger bereitgestellt */
-  if(ende == NULL) {
-    if((ende = malloc(sizeof(struct snake))) == NULL) {
-      printf("Konnte keinen Speicherplatz für ende reservieren\n");
-      exit(0);
-    }
-  }
-  
-  
-  
-  if(anfang == NULL) {
-    /* Reservieren von Speicherplatz für Struktur 
-     * für das erste Element der Liste*/
-    if((anfang = malloc(sizeof(struct snake))) == NULL) {
-      fprintf(stderr, "Kein Speicherplatz vorhanden für anfang\n");
-      return;
-    }
-    anfang->xachse=xachse;
-    anfang->yachse=yachse;
-    anfang->next=NULL;
-    ende=anfang;
-    ende->previous=NULL;
-  }
-  else {
-    zeiger=anfang; /* Zeiger auf 1. Element */
-    while(zeiger->next != NULL)
-      zeiger=zeiger->next;
-    
-    
-    /* Speicherplatz für das letzte
-     * Element der Liste reservieren und anhängen.   */
-    if((zeiger->next =malloc(sizeof(struct snake))) == NULL) {
-      fprintf(stderr,"Kein Speicherplatz für das "
-	      "letzte Element\n");
-      return;
-    } 
-    
-    zeiger1=zeiger;
-    
-    zeiger=zeiger->next; /* zeiger auf neuen Speicherplatz */
-    
-    zeiger->xachse=xachse;
-    zeiger->yachse=yachse;
-    
-    zeiger->next=NULL;
-    ende=zeiger;
-    zeiger->previous=zeiger1;
-    zeiger1->next=zeiger;
-  }
-}
-
-void snake_create_playground() {
-  int j=len_x;
-  int i=len_y;
-  int counter;
-  
-  int n,m;
-  for( n=0;n<i;n++) {
-    for( m=0;m<j;m++) {
-      playfield[m][n]=' ';
-    }
-  }
-  
-  for (counter=0;counter<j;counter++) {
-    playfield[counter][0]='#';
-    playfield[counter][i-1]='#';
-  }
-  
-  for (counter=0;counter<i;counter++) {
-    playfield[0][counter]='#';
-    playfield[j-1][counter]='#';
-  }
-  
-}
-
-void snake_print_out() {
-  int l=len_x;
-  int w=len_y;
-  int j,i;
-  for (i=0;i<w;i++) {
-    for( j=0;j<l;j++) {
-      printf("%c", playfield[j][i]);
-    }
-    
-    printf("\n");
-  }
-}
-
-void create_snake() {
-  anhaengen(len_x/2-2,len_y/2-1);
-  anhaengen(len_x/2-1,len_y/2-1);
-  anhaengen(len_x/2,len_y/2-1);
-  anhaengen(len_x/2+1,len_y/2-1);
-  
-  struct snake *zeiger;
-  
-  zeiger=anfang;
-  
-  while( zeiger != NULL) {
-    int x=zeiger->xachse;
-    int y=zeiger->yachse;
-    playfield[x][y]='0';
-    zeiger=zeiger->next;
-  } 
-}
-
-void del_first() {  //Um das 1. Element der Liste zu löschen
-  struct snake *zeiger;
-  zeiger=anfang->next;
-  playfield[anfang->xachse][anfang->yachse]=' ';
-  if(zeiger == NULL) {
-    free(anfang);
-    anfang=NULL;
-    ende=NULL;
-    return;
-  }
-  zeiger->previous=NULL;
-  free(anfang);
-  anfang=zeiger;
-  
-}
 
 /*Altes Terminal wiederherstellen */
 struct termios BACKUP_TTY;
@@ -207,6 +51,7 @@ int new_tty (int fd) {
   return 0;
 }
 
+
 /*Ursprüngliches Terminal wiederherstellen*/
 int restore_tty (int fd) {
   if ((tcsetattr (fd, TCSAFLUSH, &BACKUP_TTY)) == -1)
@@ -215,156 +60,6 @@ int restore_tty (int fd) {
 }
 
 
-void x_move(int richtung) {    // 0: Minux  1: Plus
-  struct snake *zeiger;
-  zeiger=anfang; /* Zeiger auf 1. Element */
-  while(zeiger->next != NULL) {
-    zeiger=zeiger->next;
-  }
-  check=0; //check if hindernis 
-  anhaengen(zeiger->xachse+richtung,zeiger->yachse);
-  // Ueberprüfen ob hindernis getroffen wurde
-  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='*') {
-    check=1;
-    hindernis_check=0;
-    score=score+level;
-  }
-  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$') {
-    score=score+3*level;
-    sync_del_special_point=1;
-//    special_point_active=0;
-  }
-
-  if(playfield[zeiger->xachse+richtung][zeiger->yachse]!='#'		\
-     && playfield[zeiger->xachse+richtung][zeiger->yachse]!= '0') {
-    playfield[zeiger->xachse+richtung][zeiger->yachse]='0';
-  }
-  else {
-    game_over();
-  }
-  if(check==0) {
-    del_first();
-  }
-  
-} 
-
-void y_move(int richtung) {    // 0: Minux  1: Plus
-  struct snake *zeiger;
-  zeiger=anfang; /* Zeiger auf 1. Element */
-  while(zeiger->next != NULL) {
-    zeiger=zeiger->next;
-  }
-  check=0;
-  anhaengen(zeiger->xachse,zeiger->yachse+richtung);
-  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='*') {
-    check=1;
-    hindernis_check=0;
-    score=score+level;
-  }
-  
-  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$') {
-    score=score+3*level;
-    sync_del_special_point=1;
-//    special_point_active=0;
-  }
-    
-  if(playfield[zeiger->xachse][zeiger->yachse+richtung]!='#'		\
-     && playfield[zeiger->xachse][zeiger->yachse+richtung]!= '0') {
-    playfield[zeiger->xachse][zeiger->yachse+richtung]='0';
-  }
-  else {
-    game_over();
-  }
-  
-  if(check==0) {
-    del_first();
-  }
-} 
-
-void move_snake() {
-  if(eingabe==100) {
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->xachse>=zeiger2->xachse) {
-      x_move(1);
-    }
-    else if(zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1);
-    }
-  }
-
-
-  else if(eingabe==97) {
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->xachse<=zeiger2->xachse) {
-      x_move(-1);
-    }
-    if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1);
-    }
-  }
-
-  else if(eingabe==119) {
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse<=zeiger2->yachse) {
-      y_move(-1);
-    }
-    if( zeiger1->yachse>zeiger2->yachse) {
-      y_move(1);
-    }
-  }
-
-
-  else if(eingabe==115) {
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse>=zeiger2->yachse) {
-      y_move(1);
-    }
-    if( zeiger1->yachse<zeiger2->yachse) {
-      y_move(-1);
-    }
-  }
-
-  else { 
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse>zeiger2->yachse) {
-      y_move(1);
-    }
-    if( zeiger1->yachse<zeiger2->yachse) {
-      y_move(-1);
-    }
-    if( zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1);
-    }
-    if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1);
-    }
-  }
-}
 
 void *read_stdin() {
   while(1==1) {
@@ -563,7 +258,6 @@ void special_point( pthread_t th1, pthread_t th2) {
   /* int x,y; */
   // special_point_active=1;
 
-  /* struct koordinaten arg; */
   do {
 	  if(level>5) {
 		  arg.x=zufallsauswahl(2,len_x-3);

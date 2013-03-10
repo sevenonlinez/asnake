@@ -28,6 +28,8 @@ int main (int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  int *array; //calloc(len_zahl,sizeof(int));
+
   
   if(argc==1) {
     set_geschwindigkeit(5);
