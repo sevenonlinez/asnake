@@ -279,7 +279,6 @@ void y_move(int richtung) {    // 0: Minux  1: Plus
   if(check==0) {
     del_first();
   }
-  
 } 
 
 void move_snake() {

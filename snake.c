@@ -89,8 +89,7 @@ int main (int argc, char *argv[]) {
   } while (eingabe != 'q');
   
   game_over();
-  
-  
+    
   return EXIT_SUCCESS;
 }
 
