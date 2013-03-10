@@ -6,7 +6,7 @@
 #include <curses.h>  // gcc -lncurses
 #include <pthread.h>  // gcc  -pthread
 #include <term.h>
-#include "header.h"
+#include "snake.h"
 
 // Variabeln
 char playfield[1000][1000];
