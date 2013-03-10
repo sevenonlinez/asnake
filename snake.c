@@ -12,7 +12,7 @@
 #include <curses.h>  // gcc -lncurses
 #include <pthread.h>  // gcc  -pthread
 #include <term.h>
-#include "header.h"
+#include "snake.h"
 
 
 int main (int argc, char *argv[]) {
