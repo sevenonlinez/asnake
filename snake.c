@@ -27,6 +27,8 @@ int main (int argc, char *argv[]) {
     printf("To big terminal size!!\n");
     return EXIT_FAILURE;
   }
+
+  int test;
   
   if(argc==1) {
     set_geschwindigkeit(5);
