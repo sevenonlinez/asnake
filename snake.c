@@ -28,7 +28,6 @@ int main (int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  int test;
   
   if(argc==1) {
     set_geschwindigkeit(5);
