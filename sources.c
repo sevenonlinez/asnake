@@ -17,6 +17,12 @@ struct snake *anfang=NULL;
 struct snake *next = NULL;
 struct snake *ende=NULL;
 
+struct parameter {
+	char **array;
+};
+
+
+
 
 /*Altes Terminal wiederherstellen */
 struct termios BACKUP_TTY;
@@ -100,7 +106,7 @@ int zufallsauswahl(int minimum, int maximum) {
   return zahl;
 }
 
-void create_hindernis() {
+void create_hindernis(char **playfield) {
   int x,y;
   do {
 	  if(level>5) {
@@ -218,7 +224,8 @@ int special_point_blink(// struct koordinaten *point ) {
 */
 // -------------------------------------------------------------
 
-void *del_special_point(/*struct koordinaten *point*/) {
+void *del_special_point(void *param) {
+  struct parameter *f = (struct parameter *)param;
   sync_del_special_point=0;
 
   struct snake *zeiger;
@@ -247,16 +254,23 @@ void *del_special_point(/*struct koordinaten *point*/) {
   usleep(len);
 
   if(sync_del_special_point==0) {
-    playfield[arg.x][arg.y]=' ';
+    f->array[arg.x][arg.y]=' ';
   }
 	// special_point_active=0;
   pthread_exit(NULL);
 }
  
 
-void special_point( pthread_t th1, pthread_t th2) {
+void special_point( pthread_t th1, pthread_t th2, char **playfield) {
   /* int x,y; */
   // special_point_active=1;
+
+  struct parameter *f;
+  f = (struct parameter *)malloc(sizeof(struct parameter));
+  if( f==NULL) {
+    printf("Konnte keinen Speicher reservieren...!!!\n");
+  }
+  f->array=playfield;
 
   do {
 	  if(level>5) {
@@ -271,7 +285,7 @@ void special_point( pthread_t th1, pthread_t th2) {
   
   playfield[arg.x][arg.y]='$';
 
-  if (pthread_create (&th1,NULL,&del_special_point,NULL) != 0) {
+  if (pthread_create (&th1,NULL,&del_special_point,f) != 0) {
     printf ("Konnte keinen Thread erzeugen\n");
     exit (EXIT_FAILURE);
   }    

@@ -34,21 +34,23 @@ extern struct snake *next;
 extern struct snake *ende;
 
 void anhaengen(int xachse, int yachse);
-void snake_create_playground();
-void snake_print_out();
-void create_snake();
-void del_first();
+void x_move(int richtung,char **playfield);
+void y_move(int richtung,char **playfield);
+void snake_create_playground(char **playfield);
+void snake_print_out(char **playfield);
+void create_snake(char **playfield);
+void del_first(char **playfield);
+void move_snake(char **playfield);
+
+
 int new_tty (int fd);
 int restore_tty (int fd);
-void x_move(int richtung);
-void y_move(int richtung);
-void move_snake();
 void *read_stdin();
 void game_over();
 int zufallsauswahl(int minimum, int maximum); 
-void create_hindernis();
+void create_hindernis(char **playfield);
 int get_cols();
 int get_lines();
 void set_geschwindigkeit(int eingabe);
-void special_point( pthread_t th1, pthread_t th2);
-void *del_special_point(/* struct koordinaten *point */);
+void special_point( pthread_t th1, pthread_t th2, char **playfield);
+void *del_special_point(void *param);

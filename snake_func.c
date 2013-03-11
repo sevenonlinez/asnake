@@ -79,7 +79,7 @@ void anhaengen(int xachse, int yachse) {
   }
 }
 
-void snake_create_playground() {
+void snake_create_playground(char **playfield) {
   int j=len_x;
   int i=len_y;
   int counter;
@@ -103,7 +103,7 @@ void snake_create_playground() {
   
 }
 
-void snake_print_out() {
+void snake_print_out(char **playfield) {
   int l=len_x;
   int w=len_y;
   int j,i;
@@ -116,7 +116,7 @@ void snake_print_out() {
   }
 }
 
-void create_snake() {
+void create_snake(char **playfield) {
   anhaengen(len_x/2-2,len_y/2-1);
   anhaengen(len_x/2-1,len_y/2-1);
   anhaengen(len_x/2,len_y/2-1);
@@ -134,7 +134,7 @@ void create_snake() {
   } 
 }
 
-void del_first() {  //Um das 1. Element der Liste zu löschen
+void del_first(char **playfield) {  //Um das 1. Element der Liste zu löschen
   struct snake *zeiger;
   zeiger=anfang->next;
   playfield[anfang->xachse][anfang->yachse]=' ';
@@ -151,7 +151,7 @@ void del_first() {  //Um das 1. Element der Liste zu löschen
 }
 
 
-void x_move(int richtung) {    // 0: Minux  1: Plus
+void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   struct snake *zeiger;
   zeiger=anfang; /* Zeiger auf 1. Element */
   while(zeiger->next != NULL) {
@@ -179,12 +179,12 @@ void x_move(int richtung) {    // 0: Minux  1: Plus
     game_over();
   }
   if(check==0) {
-    del_first();
+    del_first(playfield);
   }
   
 } 
 
-void y_move(int richtung) {    // 0: Minux  1: Plus
+void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   struct snake *zeiger;
   zeiger=anfang; /* Zeiger auf 1. Element */
   while(zeiger->next != NULL) {
@@ -213,11 +213,11 @@ void y_move(int richtung) {    // 0: Minux  1: Plus
   }
   
   if(check==0) {
-    del_first();
+    del_first(playfield);
   }
 } 
 
-void move_snake() {
+void move_snake(char **playfield) {
   if(eingabe==100) {
     struct snake *zeiger1, *zeiger2;
     zeiger1=anfang; /* Zeiger auf 1. Element */
@@ -226,10 +226,10 @@ void move_snake() {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse>=zeiger2->xachse) {
-      x_move(1);
+      x_move(1,playfield);
     }
     else if(zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1);
+      x_move(-1,playfield);
     }
   }
 
@@ -242,10 +242,10 @@ void move_snake() {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse<=zeiger2->xachse) {
-      x_move(-1);
+      x_move(-1,playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1);
+      x_move(1,playfield);
     }
   }
 
@@ -257,10 +257,10 @@ void move_snake() {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->yachse<=zeiger2->yachse) {
-      y_move(-1);
+      y_move(-1,playfield);
     }
     if( zeiger1->yachse>zeiger2->yachse) {
-      y_move(1);
+      y_move(1,playfield);
     }
   }
 
@@ -273,10 +273,10 @@ void move_snake() {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->yachse>=zeiger2->yachse) {
-      y_move(1);
+      y_move(1,playfield);
     }
     if( zeiger1->yachse<zeiger2->yachse) {
-      y_move(-1);
+      y_move(-1,playfield);
     }
   }
 
@@ -288,16 +288,16 @@ void move_snake() {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->yachse>zeiger2->yachse) {
-      y_move(1);
+      y_move(1,playfield);
     }
     if( zeiger1->yachse<zeiger2->yachse) {
-      y_move(-1);
+      y_move(-1, playfield);
     }
     if( zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1);
+      x_move(-1, playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1);
+      x_move(1, playfield);
     }
   }
 }
