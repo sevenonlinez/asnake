@@ -172,7 +172,7 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   }
 
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]!='#'		\
-     && playfield[zeiger->xachse+richtung][zeiger->yachse]!= '0') {
+     && playfield[zeiger->xachse+richtung][zeiger->yachse]!= '0' ) {
     playfield[zeiger->xachse+richtung][zeiger->yachse]='0';
   }
   else {
