@@ -1,3 +1,6 @@
+#ifndef _SNAKE_H
+#define _SNAKE_H
+
 /* Globale Variabeln */
 
 extern int hindernis_check;
@@ -53,3 +56,6 @@ int get_lines();
 void set_geschwindigkeit(int eingabe);
 void special_point( pthread_t th1, pthread_t th2, char **playfield);
 void *del_special_point(void *param);
+
+
+#endif
