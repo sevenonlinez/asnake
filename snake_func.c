@@ -9,7 +9,6 @@
 #include "snake.h"
 
 // Variabeln
-char playfield[1000][1000];
 int hindernis_check=0; /* bool 0: keine Hindernis generieren \
 			* 1: Hindernis generieren */
 int check;  /* bool 0: kein * getroffen, 1: * getroffen -> führe nicht \
@@ -117,10 +116,10 @@ void snake_print_out(char **playfield) {
 }
 
 void create_snake(char **playfield) {
+  anhaengen(len_x/2-4,len_y/2-1);
   anhaengen(len_x/2-2,len_y/2-1);
-  anhaengen(len_x/2-1,len_y/2-1);
   anhaengen(len_x/2,len_y/2-1);
-  anhaengen(len_x/2+1,len_y/2-1);
+  anhaengen(len_x/2+2,len_y/2-1);
   
   struct snake *zeiger;
   
@@ -226,10 +225,10 @@ void move_snake(char **playfield) {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse>=zeiger2->xachse) {
-      x_move(1,playfield);
+      x_move(2,playfield);
     }
     else if(zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1,playfield);
+      x_move(-2,playfield);
     }
   }
 
@@ -242,10 +241,10 @@ void move_snake(char **playfield) {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse<=zeiger2->xachse) {
-      x_move(-1,playfield);
+      x_move(-2,playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1,playfield);
+      x_move(2,playfield);
     }
   }
 
@@ -294,10 +293,10 @@ void move_snake(char **playfield) {
       y_move(-1, playfield);
     }
     if( zeiger1->xachse<zeiger2->xachse) {
-      x_move(-1, playfield);
+      x_move(-2, playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(1, playfield);
+      x_move(2, playfield);
     }
   }
 }

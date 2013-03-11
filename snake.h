@@ -1,6 +1,5 @@
 /* Globale Variabeln */
 
-extern char playfield[1000][1000];
 extern int hindernis_check;
 extern int check;  /* bool 0: kein * getroffen, 1: * getroffen -> führe nicht \
 	     * del(first) aus. */

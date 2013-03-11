@@ -117,7 +117,7 @@ void create_hindernis(char **playfield) {
 		  x=zufallsauswahl(1,len_x-2);
 		  y=zufallsauswahl(1,len_y-2);
 	  }
-  } while(playfield[x][y]=='0' || playfield[x][y]=='$' );
+  } while(playfield[x][y]=='0' || playfield[x][y]=='$' || x%2!=0 );
 	 
   playfield[x][y]='*'; 
   hindernis_check=1;
@@ -281,7 +281,7 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
 		  arg.x=zufallsauswahl(1,len_x-2);
 		  arg.y=zufallsauswahl(1,len_y-2);
 	  }
-  } while(playfield[arg.x][arg.y]=='0' || playfield[arg.x][arg.y]=='*');
+  } while(playfield[arg.x][arg.y]=='0' || playfield[arg.x][arg.y]=='*' || arg.x%2 != 0);
   
   playfield[arg.x][arg.y]='$';
 
