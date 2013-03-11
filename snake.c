@@ -27,8 +27,21 @@ int main (int argc, char *argv[]) {
     printf("To big terminal size!!\n");
     return EXIT_FAILURE;
   }
-
-  int *array; //calloc(len_zahl,sizeof(int));
+  char **playfield;  // zeiger auf zeiger 
+  playfield=malloc(len_x * sizeof( char*));
+  
+  if(NULL== playfield) {
+	  printf("Kein virtueller RAM mehr vorhanden...!!");
+	  return EXIT_FAILURE;
+  }
+  
+  int i;
+  for( i=0; i< len_x; i++) {
+    playfield[i] = malloc(len_y * sizeof(char));
+	  if( NULL == playfield[i]) {
+	    printf("Kein Speicher mehr fuer Zeile %d\n", i);
+	  }
+  }
   
   if(argc==1) {
     set_geschwindigkeit(5);
@@ -42,27 +55,28 @@ int main (int argc, char *argv[]) {
 
   pthread_t th1=1;
   pthread_t th3,th4;
+  
+    
+  /*Setzen des neuen Modus*/
+  if (new_tty (STDIN_FILENO) == -1) {
+    printf ("Fehler bei der Funktion new_tty()\n");
+    exit (EXIT_FAILURE);
+  }
 
   if (pthread_create (&th1,NULL,&read_stdin,NULL) != 0) {
     printf ("Konnte keinen Thread erzeugen\n");
     exit (EXIT_FAILURE);
   }    
   
-  /*Setzen des neuen Modus*/
-  if (new_tty (STDIN_FILENO) == -1) {
-    printf ("Fehler bei der Funktion new_tty()\n");
-    exit (EXIT_FAILURE);
-  }
-  
-  snake_create_playground(len_x,len_y);
-  create_snake(len_x,len_y);
+  snake_create_playground(playfield);
+  create_snake(playfield);
   
   int sync=1; // sync for special_point 
 //  int sync_blinken=0;
 
   do {
     if((score/level)%4==0 && sync==0) {
-      special_point(th3,th4);
+      special_point(th3,th4,playfield);
       sync=1;
     }
     if((score/level)%4==1) {
@@ -81,12 +95,12 @@ int main (int argc, char *argv[]) {
     /* } */
 
     system("clear"); 
-    snake_print_out(len_x,len_y);
+    snake_print_out(playfield);
     usleep(geschwindigkeit);
     
-    move_snake(eingabe); 
+    move_snake(playfield); 
     if(hindernis_check==0) {
-      create_hindernis();
+      create_hindernis(playfield);
     } 
   } while (eingabe != 'q');
   
