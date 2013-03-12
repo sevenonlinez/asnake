@@ -149,8 +149,6 @@ void del_first(char **playfield) {  //Um das 1. Element der Liste zu löschen
   
 }
 
-
-<<<<<<< HEAD
 void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   struct snake *zeiger;
   zeiger=anfang; /* Zeiger auf 1. Element */
