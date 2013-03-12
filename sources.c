@@ -13,6 +13,8 @@
 int sync_del_special_point; /* bool 0: '$' wurde nich erwischt
 			       1: '$' wurde erwischt, lösche pos($) nicht */
 
+struct koordinaten specialpoint;
+
 struct snake *anfang=NULL;
 struct snake *next = NULL;
 struct snake *ende=NULL;
@@ -205,24 +207,7 @@ void set_geschwindigkeit(int eingabe) {
     break;
   }
 }
-// ---------------------------------------------------------
-/*
-int special_point_blink(// struct koordinaten *point ) {
-  int sync_blinken=0;
 
-  while(special_point_active==1 && sync_del_special_point==0) {
-    if(sync_blinken==1) {
-      playfield[arg.x][arg.y]=' ';
-    }
-    else if(sync_blinken==0) {
-      playfield[arg.x][arg.y]='$';
-    }
-    usleep(geschwindigkeit-1);
-  }
-  return 0;
-}
-*/
-// -------------------------------------------------------------
 
 void *del_special_point(void *param) {
   struct parameter *f = (struct parameter *)param;
@@ -263,7 +248,6 @@ void *del_special_point(void *param) {
 
 void special_point( pthread_t th1, pthread_t th2, char **playfield) {
   /* int x,y; */
-  // special_point_active=1;
 
   struct parameter *f;
   f = (struct parameter *)malloc(sizeof(struct parameter));
@@ -274,16 +258,22 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
 
   do {
 	  if(level>3) {
-		  arg.x=zufallsauswahl(2,len_x-3);
-		  arg.y=zufallsauswahl(2,len_y-3);
+		  specialpoint.x=zufallsauswahl(2,len_x-3);
+		  specialpoint.y=zufallsauswahl(2,len_y-3);
 	  }
 	  else {
-		  arg.x=zufallsauswahl(1,len_x-2);
-		  arg.y=zufallsauswahl(1,len_y-2);
+		  specialpoint.x=zufallsauswahl(1,len_x-2);
+		  specialpoint.y=zufallsauswahl(1,len_y-2);
 	  }
-  } while(playfield[arg.x][arg.y]=='0' || playfield[arg.x][arg.y]=='*' || arg.x%2 == 0);
+  } while(playfield[specialpoint.x][specialpoint.y]=='0' || playfield[specialpoint.x][specialpoint.y]=='*' \ 
+            || specialpoint.x%2 == 0);
   
-  playfield[arg.x][arg.y]='$';
+  playfield[specialpoint.x][specialpoint.y]='$';
+  special_point_active=1;
+  if( pthread_create(&th2,NULL, &special_point_blink,f) != 0) {
+      printf ("Konnte keinen Thread erzeugen\n");
+    exit (EXIT_FAILURE);
+  }   
 
   if (pthread_create (&th1,NULL,&del_special_point,f) != 0) {
     printf ("Konnte keinen Thread erzeugen\n");
@@ -295,3 +285,23 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
 //  }
   
 }
+
+// ---------------------------------------------------------
+
+void special_point_blink(void *param) {
+    struct parameter *f = (struct parameter *)param;
+ //   int sync_blinken=0;
+
+  while(special_point_active==1/* && sync_del_special_point==0*/ ) {
+    if(f->array[specialpoint.x][specialpoint.y]=='$') {
+      f->array[specialpoint.x][specialpoint.y]=' ';
+    }
+    else if(f->array[specialpoint.x][specialpoint.y]) {
+      f->array[specialpoint.x][specialpoint.y]='$';
+    }
+    usleep(2*geschwindigkeit);
+  }
+    pthread_exit(NULL);
+}
+
+// -------------------------------------------------------------

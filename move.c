@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "snake.h"
 
+int special_point_active=0;
+struct koordinaten specialpoint;
+
 void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   struct snake *zeiger;
   zeiger=anfang; /* Zeiger auf 1. Element */
@@ -20,10 +23,11 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
     hindernis_check=0;
     score=score+level;
   }
-  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$') {
+  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$' || zeiger->xachse+richtung == specialpoint.x \
+        && zeiger->yachse== specialpoint.y ) {
     score=score+3*level;
     sync_del_special_point=1;
-//    special_point_active=0;
+    special_point_active=0;
   }
 
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]!='#'		\
@@ -54,10 +58,11 @@ void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
     score=score+level;
   }
   
-  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$') {
+  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$' || zeiger->yachse+richtung == specialpoint.y \
+        && specialpoint.x == zeiger->xachse) {
     score=score+3*level;
     sync_del_special_point=1;
-//    special_point_active=0;
+    special_point_active=0;
   }
     
   if(playfield[zeiger->xachse][zeiger->yachse+richtung]!='#'		\

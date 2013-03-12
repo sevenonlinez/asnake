@@ -14,6 +14,7 @@ extern int score;
 extern int level;
 extern int sync_del_special_point; /* bool 0: '$' wurde nich erwischt
 			       1: '$' wurde erwischt, lösche pos($) nicht */
+extern int special_point_active;
 
 /* int sync_blinken; /\* synchronisiere special point blinken. *\/  */
 
@@ -56,6 +57,6 @@ int get_lines();
 void set_geschwindigkeit(int eingabe);
 void special_point( pthread_t th1, pthread_t th2, char **playfield);
 void *del_special_point(void *param);
-
+void special_point_blink(void *param);
 
 #endif
