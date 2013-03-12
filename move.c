@@ -89,7 +89,6 @@ void move_snake(char **playfield) {
     }
   }
 
-
   else if(eingabe==97) {
     struct snake *zeiger1, *zeiger2;
     zeiger1=anfang; /* Zeiger auf 1. Element */
