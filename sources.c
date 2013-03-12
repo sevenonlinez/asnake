@@ -109,7 +109,7 @@ int zufallsauswahl(int minimum, int maximum) {
 void create_hindernis(char **playfield) {
   int x,y;
   do {
-	  if(level>5) {
+	  if(level>3) {
 		  x=zufallsauswahl(2,len_x-3);
 		  y=zufallsauswahl(2,len_y-3);
 	  }
@@ -117,7 +117,7 @@ void create_hindernis(char **playfield) {
 		  x=zufallsauswahl(1,len_x-2);
 		  y=zufallsauswahl(1,len_y-2);
 	  }
-  } while(playfield[x][y]=='0' || playfield[x][y]=='$' );
+  } while(playfield[x][y]=='0' || playfield[x][y]=='$' || x%2==0 );
 	 
   playfield[x][y]='*'; 
   hindernis_check=1;
@@ -273,7 +273,7 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
   f->array=playfield;
 
   do {
-	  if(level>5) {
+	  if(level>3) {
 		  arg.x=zufallsauswahl(2,len_x-3);
 		  arg.y=zufallsauswahl(2,len_y-3);
 	  }
@@ -281,7 +281,7 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
 		  arg.x=zufallsauswahl(1,len_x-2);
 		  arg.y=zufallsauswahl(1,len_y-2);
 	  }
-  } while(playfield[arg.x][arg.y]=='0' || playfield[arg.x][arg.y]=='*');
+  } while(playfield[arg.x][arg.y]=='0' || playfield[arg.x][arg.y]=='*' || arg.x%2 == 0);
   
   playfield[arg.x][arg.y]='$';
 
