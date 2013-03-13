@@ -30,6 +30,8 @@ struct koordinaten {
   int y;
 };
 
+extern struct koordinaten specialpoint;
+
 extern struct koordinaten arg;
 
 extern struct snake *anfang;
