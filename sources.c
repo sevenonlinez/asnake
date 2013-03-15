@@ -103,9 +103,9 @@ void game_over() {
 }
 
 int zufallsauswahl(int minimum, int maximum) { 
-  int bereich = maximum - minimum + 1; 
-  int zahl = minimum + ( rand() % bereich ); 
-  return zahl;
+    int bereich = maximum - minimum + 1; 
+    int zahl = minimum + ( rand() % bereich ); 
+    return zahl;
 }
 
 void create_hindernis(char **playfield) {
