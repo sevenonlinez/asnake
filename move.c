@@ -1,9 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "snake.h"
+#include <string.h>
 
-int special_point_active=0;
+#include "game.h"
+#include "parameter.h"
+#include "dynamical_list.h"
+#include "move.h"
+
+int len_x, len_y;
+
+int special_point_active;
+static int check;
+int hindernis_check;
+int sync_del_special_point=0;
+// char eingabe;
+
+
 struct koordinaten specialpoint;
+
+struct snake *anfang;
+struct snake *next;
+struct snake *ende;
 
 void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   struct snake *zeiger;
@@ -21,20 +38,19 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='*') {
     check=1;
     hindernis_check=0;
-    score=score+level;
+    game.score=game.score+game.level;
   }
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$' \
 	|| zeiger->xachse+richtung == specialpoint.x \
 	&& zeiger->yachse== specialpoint.y ) {
-    score=score+3*level;
+    game.score=game.score+3*game.level;
     sync_del_special_point=1;
     special_point_active=0;
   }
 
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]!='#'		\
-     && playfield[zeiger->xachse+richtung][zeiger->yachse]!= '0'  \
-     && playfield[zeiger->xachse+richtung-1][zeiger->yachse]!='#') {
-    playfield[zeiger->xachse+richtung][zeiger->yachse]='0';
+     && playfield[zeiger->xachse+richtung][zeiger->yachse]!= '@')  {
+    playfield[zeiger->xachse+richtung][zeiger->yachse]='@';
   }
   else {
     game_over();
@@ -56,20 +72,20 @@ void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='*') {
     check=1;
     hindernis_check=0;
-    score=score+level;
+    game.score=game.score+game.level;
   }
   
   if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$' \
 	|| zeiger->yachse+richtung == specialpoint.y \
 	&& specialpoint.x == zeiger->xachse) {
-    score=score+3*level;
+    game.score=game.score+3*game.level;
     sync_del_special_point=1;
     special_point_active=0;
   }
     
   if(playfield[zeiger->xachse][zeiger->yachse+richtung]!='#'		\
-     && playfield[zeiger->xachse][zeiger->yachse+richtung]!= '0') {
-    playfield[zeiger->xachse][zeiger->yachse+richtung]='0';
+     && playfield[zeiger->xachse][zeiger->yachse+richtung]!= '@') {
+    playfield[zeiger->xachse][zeiger->yachse+richtung]='@';
   }
   else {
     game_over();
@@ -89,10 +105,10 @@ void move_snake(char **playfield) {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse>=zeiger2->xachse) {
-      x_move(2,playfield);
+      x_move(1,playfield);
     }
     else if(zeiger1->xachse<zeiger2->xachse) {
-      x_move(-2,playfield);
+      x_move(-1,playfield);
     }
   }
 
@@ -104,10 +120,10 @@ void move_snake(char **playfield) {
     }
     zeiger2=zeiger1->previous;
     if( zeiger1->xachse<=zeiger2->xachse) {
-      x_move(-2,playfield);
+      x_move(-1,playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(2,playfield);
+      x_move(1,playfield);
     }
   }
 
@@ -156,10 +172,10 @@ void move_snake(char **playfield) {
       y_move(-1, playfield);
     }
     if( zeiger1->xachse<zeiger2->xachse) {
-      x_move(-2, playfield);
+      x_move(-1, playfield);
     }
     if(zeiger1->xachse>zeiger2->xachse) {
-      x_move(2, playfield);
+      x_move(1, playfield);
     }
   }
 }
