@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "parameter.h"
 #include "game.h"
 
@@ -49,15 +51,35 @@ void set_geschwindigkeit(int eingabe) {
   }
 }
 
+void show_help_screen() {
+  printf("asnake\nReleased under the GNU GPL.\n");
+  printf("-s --speed=SPEED\tSet the speed of the snake, default is 5\n");
+  exit(0);
+}
 
 void check_args(int argc, char *argv[]) {
     if(argc==1) {
         set_geschwindigkeit(5);
     }
-    else if(argc==2) {
-        set_geschwindigkeit(atoi(argv[1]));
-    }
     else {
-        set_geschwindigkeit(5);
+	    show_help_screen();
+      }
+ 
+/*     
+      else {
+	printf("%c: Ungültige Option %c\n", argv[0], argv[1]);
+	show_help_screen();
+      }
     }
+    
+    else if(argc==3) {
+      if(argv[1]=="-s") {
+	    set_geschwindigkeit(atoi(argv[2]));
+      }
+      
+      else {
+	show_help_screen();
+      }   
+      
+    } */
 }

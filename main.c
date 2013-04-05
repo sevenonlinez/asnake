@@ -1,5 +1,5 @@
 /* Ascii Snake 
- * Version: 1.1
+ * Version: 2.0
  * Released under the GNU GPL
  * sevenonlinez
  */ 
@@ -25,9 +25,10 @@ int main(int argc, char *argv[]) {
     check_display_size();
     check_args(argc, argv);
 
+    /*
     printf("xachse:\t%i\nyachse:\t%i\n", len_x, len_y);
     sleep (1);
-
+    */
 
     // init playfield value
 
@@ -58,8 +59,7 @@ int main(int argc, char *argv[]) {
         printf ("Konnte keinen Thread erzeugen\n");
         exit (EXIT_FAILURE);
     }
-    printf("in line 61"); sleep(2);
-    snake_create_playground(playfield); //FIXME: Speicherzugriffsfehler
+    snake_create_playground(playfield); 
     create_snake(playfield);
     snake_print_out(playfield);
 
