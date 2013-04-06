@@ -56,7 +56,8 @@ void set_geschwindigkeit(int eingabe) {
 
 void show_help_screen() {
   printf("asnake\nReleased under the GNU GPL.\n");
-  printf("-s --speed=SPEED\tSet the speed of the snake, default is 5\n");
+  printf("-s =SPEED\t Set the speed of the snake, default is 5\n");
+  printf("-h\t\t Show this help screen\n");
   exit(0);
 }
 
