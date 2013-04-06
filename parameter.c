@@ -84,19 +84,25 @@ int check_args(int argc, char *argv[]) {
       set_geschwindigkeit(atoi(svalue));
       break;
     case '?':
-      if (optopt == 's') 
+      if (optopt == 's') {
         fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-      else if (isprint (optopt))
+      //  return 1;
+      }
+      else if (isprint (optopt)) {
         fprintf(stderr, "Unknown option '-%c'.\n", optopt);
+      //  return 1;
+      }
       else 
         fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
-      return 1;
+      return -1;
     default:
       abort ();
     }
 
   // printf ("aflag = %d, bflag = %d, cvalue = %s\n", aflag, bflag, cvalue);
 
-  for (index = optind; index < argc; index++) 
+  for (index = optind; index < argc; index++) {
     printf("Non-option argument %s\n", argv[index]);
+    return -1;
+    }
 }
