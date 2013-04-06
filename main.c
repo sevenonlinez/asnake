@@ -23,6 +23,9 @@
 int main(int argc, char *argv[]) {
     set_display_size();
     check_display_size();
+    // set the default speed
+    set_geschwindigkeit(5);
+    
     check_args(argc, argv);
 
     // init playfield value
