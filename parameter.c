@@ -61,9 +61,16 @@ void check_args(int argc, char *argv[]) {
     if(argc==1) {
         set_geschwindigkeit(5);
     }
+    else if(argc==2) {
+	set_geschwindigkeit(atoi(argv[1]));
+    }
+
     else {
 	    show_help_screen();
       }
+
+
+
  
 /*     
       else {

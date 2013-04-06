@@ -9,3 +9,4 @@ void y_move(int richtung, char **playfield);
 void move_snake(char **playfield);
 
 #endif // _MOVE_H
+

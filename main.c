@@ -25,11 +25,6 @@ int main(int argc, char *argv[]) {
     check_display_size();
     check_args(argc, argv);
 
-    /*
-    printf("xachse:\t%i\nyachse:\t%i\n", len_x, len_y);
-    sleep (1);
-    */
-
     // init playfield value
 
     char **playfield;  // pointer to pointer
@@ -63,15 +58,15 @@ int main(int argc, char *argv[]) {
     create_snake(playfield);
     snake_print_out(playfield);
 
-  int sync=1;   // sync for special_point 
+    int sync=1;   // sync for special_point 
     game.score=0;
 
   do {
-    if((game.score/game.level)%4==0 && sync==0) {
+    if((game.score/game.level)%5==0 && sync==0) {
       special_point(th2,th3,playfield);
       sync=1;
     }
-    if((game.score/game.level)%4==1) {
+    if((game.score/game.level)%5==1) {
       sync=0;
     }
 
