@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+
 #include "parameter.h"
 #include "game.h"
 
@@ -57,36 +60,42 @@ void show_help_screen() {
   exit(0);
 }
 
-void check_args(int argc, char *argv[]) {
-    if(argc==1) {
-        set_geschwindigkeit(5);
+int check_args(int argc, char *argv[]) {
+  int dflag = 0;  /* Debug ON/OFF */
+  int hflag = 0;  /* show help screen */ 
+  char *svalue = NULL;  /* set the speed of the snake */
+  int index;
+  int c;
+  
+  opterr = 0;
+
+  while ((c = getopt (argc, argv, "dhs:")) != -1) 
+    switch (c) {
+    case 'd':
+      dflag = 1;
+      break;
+    case 'h':
+      hflag = 1;
+      show_help_screen();
+      break;
+    case 's':
+      svalue = optarg;
+      set_geschwindigkeit(atoi(svalue));
+      break;
+    case '?':
+      if (optopt == 's') 
+        fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+      else if (isprint (optopt))
+        fprintf(stderr, "Unknown option '-%c'.\n", optopt);
+      else 
+        fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
+      return 1;
+    default:
+      abort ();
     }
-    else if(argc==2) {
-	set_geschwindigkeit(atoi(argv[1]));
-    }
 
-    else {
-	    show_help_screen();
-      }
+  // printf ("aflag = %d, bflag = %d, cvalue = %s\n", aflag, bflag, cvalue);
 
-
-
- 
-/*     
-      else {
-	printf("%c: Ungültige Option %c\n", argv[0], argv[1]);
-	show_help_screen();
-      }
-    }
-    
-    else if(argc==3) {
-      if(argv[1]=="-s") {
-	    set_geschwindigkeit(atoi(argv[2]));
-      }
-      
-      else {
-	show_help_screen();
-      }   
-      
-    } */
+  for (index = optind; index < argc; index++) 
+    printf("Non-option argument %s\n", argv[index]);
 }

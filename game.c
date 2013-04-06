@@ -127,7 +127,7 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
   }  
 }  
 
-void special_point_blink(void *param) {
+void *special_point_blink(void *param) {
     struct parameter *f = (struct parameter *)param;
  //   int sync_blinken=0;
 
