@@ -143,7 +143,7 @@ void *special_point_blink(void *param) {
     pthread_exit(NULL);
 }
 
-void *del_special_point(void *param) {
+void *del_special_point(void *param) {      // FIXME: doesn't work at the moment 
   struct parameter *f = (struct parameter *)param;
   sync_del_special_point=0;
 
@@ -167,7 +167,7 @@ void *del_special_point(void *param) {
   else if(zeiger->yachse<=specialpoint.y) {
     len+=(specialpoint.y-zeiger->yachse);
   }
-  len+=10; 
+  // len+=10; 
   len*=game.geschwindigkeit;
 
   usleep(len);

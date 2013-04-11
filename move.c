@@ -42,7 +42,8 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   }
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$' \
 	|| zeiger->xachse+richtung == specialpoint.x \
-	&& zeiger->yachse== specialpoint.y ) {
+	&& zeiger->yachse== specialpoint.y ) 
+  {
     game.score=game.score+2*game.level+1;
     sync_del_special_point=1;
     special_point_active=0;
