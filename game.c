@@ -96,8 +96,7 @@ int zufallsauswahl(int minimum, int maximum) {
     return zahl;
 }
 
-void special_point( pthread_t th1, pthread_t th2, char **playfield) {
-    /* int x,y; */
+void special_point (pthread_t th1, pthread_t th2, char **playfield) {
 
     struct parameter *f;
     f = (struct parameter *)malloc(sizeof(struct parameter));
@@ -131,7 +130,7 @@ void *special_point_blink(void *param) {
     struct parameter *f = (struct parameter *)param;
  //   int sync_blinken=0;
 
-  while(special_point_active==1/* && sync_del_special_point==0*/ ) {
+  while(special_point_active==1 && sync_del_special_point==0 ) {
     if(f->array[specialpoint.x][specialpoint.y]=='$') {
       f->array[specialpoint.x][specialpoint.y]=' ';
     }
@@ -143,7 +142,7 @@ void *special_point_blink(void *param) {
     pthread_exit(NULL);
 }
 
-void *del_special_point(void *param) {      // FIXME: doesn't work at the moment 
+void *del_special_point(void *param) {    
   struct parameter *f = (struct parameter *)param;
   sync_del_special_point=0;
 
@@ -167,15 +166,15 @@ void *del_special_point(void *param) {      // FIXME: doesn't work at the moment
   else if(zeiger->yachse<=specialpoint.y) {
     len+=(specialpoint.y-zeiger->yachse);
   }
-  // len+=10; 
+  len+=10; 
   len*=game.geschwindigkeit;
 
   usleep(len);
 
-  if(sync_del_special_point==0) {
+  if (sync_del_special_point==0) {
     f->array[specialpoint.x][specialpoint.y]=' ';
+    sync_del_special_point=1;
   }
-	// special_point_active=0;
   pthread_exit(NULL);
 }
  
