@@ -76,11 +76,17 @@ int main(int argc, char *argv[]) {
       sync=0;
     }
 
+    if (eingabe == 'p' || eingabe == 'P') {
+        do {
+            usleep(100);
+        } while (eingabe == 'p' || eingabe == 'P');
+    }
+
     system("clear"); 
     snake_print_out(playfield);
     usleep(game.geschwindigkeit);
     
-    move_snake_diagonal(playfield); 
+    move_snake(playfield); 
     if(hindernis_check==0) {
       create_hindernis(playfield);
     } 

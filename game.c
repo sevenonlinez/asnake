@@ -106,9 +106,9 @@ void special_point (pthread_t th1, pthread_t th2, char **playfield) {
     f->array=playfield;
 
     do  {
-        specialpoint.x= zufallsauswahl(0,len_x-1);
+        specialpoint.x= zufallsauswahl(1,len_x-1);
 
-        specialpoint.y= zufallsauswahl(0,len_y-1);
+        specialpoint.y= zufallsauswahl(1,len_y-1);
 
     } while ( playfield[specialpoint.x][specialpoint.y]=='@' \
 	|| playfield[specialpoint.x][specialpoint.y]== '*');
