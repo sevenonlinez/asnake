@@ -76,6 +76,12 @@ int main(int argc, char *argv[]) {
       sync=0;
     }
 
+    if (eingabe == 'p' || eingabe == 'P') {
+        do {
+            usleep(100);
+        } while (eingabe == 'p' || eingabe == 'P');
+    }
+
     system("clear"); 
     snake_print_out(playfield);
     usleep(game.geschwindigkeit);

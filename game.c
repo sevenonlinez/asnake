@@ -107,9 +107,9 @@ void special_point( pthread_t th1, pthread_t th2, char **playfield) {
     f->array=playfield;
 
     do  {
-        specialpoint.x= zufallsauswahl(0,len_x-1);
+        specialpoint.x= zufallsauswahl(1,len_x-1);
 
-        specialpoint.y= zufallsauswahl(0,len_y-1);
+        specialpoint.y= zufallsauswahl(1,len_y-1);
 
     } while ( playfield[specialpoint.x][specialpoint.y]=='@' \
 	|| playfield[specialpoint.x][specialpoint.y]== '*');
@@ -173,7 +173,7 @@ void *del_special_point(void *param) {      // FIXME: doesn't work at the moment
   usleep(len);
 
   if(sync_del_special_point==0) {
-    f->array[specialpoint.x][specialpoint.y]=' ';
+    f->array[specialpoint.x][specialpoint.y]=' ';  // FIXME: probably a bug!
   }
 	// special_point_active=0;
   pthread_exit(NULL);
