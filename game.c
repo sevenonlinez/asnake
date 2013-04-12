@@ -26,7 +26,7 @@ int special_point_active;
 
 char eingabe;
 
-void *read_stdin() {
+void *read_stdin () {
   while(0 == 0) {
     if (read (STDIN_FILENO, &eingabe, 1) < 1) {
       printf ("Fehler bei read\n");
@@ -38,7 +38,7 @@ void *read_stdin() {
 }
 
 
-void snake_create_playground(char **playfield) {
+void snake_create_playground (char **playfield) {
   int counter; 
   int n,m;
     for(n=0; n < len_x-1; n++) {
@@ -59,7 +59,7 @@ void snake_create_playground(char **playfield) {
         
 }
 
-void snake_print_out(char **playfield) {
+void snake_print_out (char **playfield) {
   int j,i;
   for (i=0;i<len_y;i++) {
     for( j=0;j<len_x;j++) {
@@ -69,7 +69,7 @@ void snake_print_out(char **playfield) {
   }
 }
 
-void create_snake(char **playfield) {
+void create_snake (char **playfield) {
     int mittex = len_x / 2;
     int mittey = len_y / 2;
 
@@ -90,7 +90,7 @@ void create_snake(char **playfield) {
   } 
 }
 
-int zufallsauswahl(int minimum, int maximum) {
+int zufallsauswahl (int minimum, int maximum) {
     int bereich = maximum - minimum + 1;
     int zahl = minimum + ( rand() % bereich );
     return zahl;

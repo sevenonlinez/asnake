@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
     snake_print_out(playfield);
     usleep(game.geschwindigkeit);
     
-    move_snake(playfield); 
+    move_snake_diagonal(playfield); 
     if(hindernis_check==0) {
       create_hindernis(playfield);
     } 
