@@ -10,10 +10,9 @@
 int len_x, len_y;
 
 int special_point_active;
-static int check;
+static int counter_special_point=0;
 int hindernis_check;
-int sync_del_special_point=0;
-// char eingabe;
+int sync_del_special_point;
 
 
 struct koordinaten specialpoint;
@@ -32,12 +31,22 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
     game_over();
   }
 
-  check=0; //check if hindernis 
+  int check=0; //check if hindernis 
   anhaengen(zeiger->xachse+richtung,zeiger->yachse);
   // Ueberprüfen ob hindernis getroffen wurde
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='*') {
     check=1;
-    hindernis_check=0;
+
+	if (counter_special_point >= 5) {
+		special_point(playfield);
+		counter_special_point=0;
+	}
+	else {
+		counter_special_point++;
+	}
+
+    counter_special_point++;
+	create_hindernis(playfield);
     game.score=game.score+game.level;
   }
   if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$' \
@@ -68,11 +77,21 @@ void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   while(zeiger->next != NULL) {
     zeiger=zeiger->next;
   }
-  check=0;
+  int check=0;
   anhaengen(zeiger->xachse,zeiger->yachse+richtung);
   if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='*') {
     check=1;
-    hindernis_check=0;
+
+	if (counter_special_point >= 5) {
+		special_point(playfield);
+		counter_special_point=0;
+	}
+	else {
+		counter_special_point++;
+	}
+
+    counter_special_point++;
+	create_hindernis(playfield);
     game.score=game.score+game.level;
   }
   
@@ -103,13 +122,14 @@ void diagonal_1 (int richtung, char **playfield) { // up left to down right
     while(zeiger->next != NULL) {
         zeiger=zeiger->next;
     }
-    check=0;
+    int check=0;
     anhaengen(zeiger->xachse+richtung, zeiger->yachse+richtung);
 
     if(playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]=='*') {
         check=1;
-        hindernis_check=0;
-        game.score=game.score+game.level;
+        //hindernis_check=0;
+		create_hindernis(playfield);
+    	game.score=game.score+game.level;
     }
   
     if(playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]=='$' \
@@ -139,12 +159,13 @@ void diagonal_2 (int richtung, char **playfield) { // up right to down left
     while(zeiger->next != NULL) {
         zeiger=zeiger->next;
     }
-    check=0;
+    int check=0;
     anhaengen(zeiger->xachse+richtung, zeiger->yachse-richtung);
 
     if(playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]=='*') {
         check=1;
-        hindernis_check=0;
+        //hindernis_check=0;
+		create_hindernis(playfield);
         game.score=game.score+game.level;
     }
   

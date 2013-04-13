@@ -96,8 +96,8 @@ int zufallsauswahl (int minimum, int maximum) {
     return zahl;
 }
 
-void special_point (pthread_t th1, pthread_t th2, char **playfield) {
-
+void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
+	pthread_t th1,th2;
     struct parameter *f;
     f = (struct parameter *)malloc(sizeof(struct parameter));
     if( f==NULL) {
@@ -106,15 +106,18 @@ void special_point (pthread_t th1, pthread_t th2, char **playfield) {
     f->array=playfield;
 
     do  {
-        specialpoint.x= zufallsauswahl(1,len_x-1);
+        specialpoint.x= zufallsauswahl(1,len_x);
 
-        specialpoint.y= zufallsauswahl(1,len_y-1);
+        specialpoint.y= zufallsauswahl(1,len_y);
 
     } while ( playfield[specialpoint.x][specialpoint.y]=='@' \
-	|| playfield[specialpoint.x][specialpoint.y]== '*');
+	|| playfield[specialpoint.x][specialpoint.y]== '*' \
+	|| playfield[specialpoint.x][specialpoint.y]== '#' \
+	|| playfield[specialpoint.x][specialpoint.y]== '$');
   
   playfield[specialpoint.x][specialpoint.y]='$';
   special_point_active=1;
+    sync_del_special_point=0;
   if( pthread_create(&th2,NULL, &special_point_blink,f) != 0) {
       printf ("Konnte keinen Thread erzeugen\n");
     exit (EXIT_FAILURE);
@@ -215,7 +218,6 @@ void create_hindernis(char **playfield) {
   } while(playfield[x][y]=='@' || playfield[x][y]=='$' || x%2!=0 );
 	 
   playfield[x][y]='*'; 
-  hindernis_check=1;
 }
 
 

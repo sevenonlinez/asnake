@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
         exit (EXIT_FAILURE);
     }
 
-    pthread_t th1=1, th2=2, th3=3;;
+    pthread_t th1=1, th2=2, th3=3;
 
     if (pthread_create (&th1,NULL,&read_stdin,NULL) != 0) {
         printf ("Konnte keinen Thread erzeugen\n");
@@ -62,20 +62,12 @@ int main(int argc, char *argv[]) {
     }
     snake_create_playground(playfield); 
     create_snake(playfield);
+	create_hindernis(playfield);
     snake_print_out(playfield);
 
-    int sync=1;   // sync for special_point 
     game.score=0;
 
   do {
-    if((game.score/game.level)%5==0 && sync==0) {
-      special_point(th2,th3,playfield);
-      sync=1;
-    }
-    if((game.score/game.level)%5==1) {
-      sync=0;
-    }
-
     if (eingabe == 'p' || eingabe == 'P') {
         do {
             usleep(100);
@@ -87,9 +79,7 @@ int main(int argc, char *argv[]) {
     usleep(game.geschwindigkeit);
     
     move_snake(playfield); 
-    if(hindernis_check==0) {
-      create_hindernis(playfield);
-    } 
+
   } while (eingabe != 'q');
   
   game_over();
