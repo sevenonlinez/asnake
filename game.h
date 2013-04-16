@@ -4,9 +4,9 @@
 #include <pthread.h>
 
 struct game_t {
-    int level;
-    int geschwindigkeit;
-    int score;
+  int level;
+  int geschwindigkeit;
+  int score;
 };
 
 struct koordinaten {

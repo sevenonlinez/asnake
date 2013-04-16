@@ -48,19 +48,19 @@ int get_lines() {
 
 
 void set_display_size() {
-    len_x=get_cols();
-    len_y=get_lines()-1;
-
-    int xcor=len_x;
-    
-    if( xcor % 2 == 0) {
-        xcor = len_x/2;
-    }
-    else {
-        xcor = (len_x+1)/2;
-        xcor--;    
-    }
-    len_x = xcor;
+  len_x=get_cols();
+  len_y=get_lines()-1;
+  
+  int xcor=len_x;
+  
+  if( xcor % 2 == 0) {
+    xcor = len_x/2;
+  }
+  else {
+    xcor = (len_x+1)/2;
+    xcor--;    
+  }
+  len_x = xcor;
 }
 
 int check_display_size() {
@@ -68,7 +68,7 @@ int check_display_size() {
     printf("Zu kleine Terminalgrösse!!\n");
     return EXIT_FAILURE;
   }
-
+  
   if(len_x>499 || len_y>998) {
     printf("To big terminal size!!\n");
     return EXIT_FAILURE;
@@ -108,7 +108,7 @@ int new_tty (int fd) {
     return -1;
   return 0;
 }
-  
+
 
 /*Ursprüngliches Terminal wiederherstellen*/
 int restore_tty (int fd) {

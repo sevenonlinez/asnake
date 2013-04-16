@@ -12,7 +12,7 @@
 struct game_t game;
 
 struct parameter {
-	char **array;
+  char **array;
 };
 
 struct koordinaten specialpoint;
@@ -41,11 +41,11 @@ void *read_stdin () {
 void snake_create_playground (char **playfield) {
   int counter; 
   int n,m;
-    for(n=0; n < len_x-1; n++) {
-        for( m=0; m < len_y-1; m++) {
-            playfield[n][m]=' ';
-        }
-    } 
+  for(n=0; n < len_x-1; n++) {
+    for( m=0; m < len_y-1; m++) {
+      playfield[n][m]=' ';
+    }
+  } 
   
   for (counter=0;counter<len_x;counter++) {
     playfield[counter][0]='#';
@@ -56,7 +56,7 @@ void snake_create_playground (char **playfield) {
     playfield[0][counter]='#';
     playfield[len_x-1][counter]='#';
   } 
-        
+  
 }
 
 void snake_print_out (char **playfield) {
@@ -70,9 +70,9 @@ void snake_print_out (char **playfield) {
 }
 
 void create_snake (char **playfield) {
-    int mittex = len_x / 2;
-    int mittey = len_y / 2;
-
+  int mittex = len_x / 2;
+  int mittey = len_y / 2;
+  
   anhaengen(mittex-2,mittey);
   anhaengen(mittex-1,mittey);
   anhaengen(mittex,mittey);
@@ -91,38 +91,38 @@ void create_snake (char **playfield) {
 }
 
 int zufallsauswahl (int minimum, int maximum) {
-    int bereich = maximum - minimum + 1;
-    int zahl = minimum + ( rand() % bereich );
-    return zahl;
+  int bereich = maximum - minimum + 1;
+  int zahl = minimum + ( rand() % bereich );
+  return zahl;
 }
 
 void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
-	pthread_t th1,th2;
-    struct parameter *f;
-    f = (struct parameter *)malloc(sizeof(struct parameter));
-    if( f==NULL) {
-        printf("Konnte keinen Speicher reservieren...!!!\n");
-    }
-    f->array=playfield;
-
-    do  {
-        specialpoint.x= zufallsauswahl(1,len_x);
-
-        specialpoint.y= zufallsauswahl(1,len_y);
-
-    } while ( playfield[specialpoint.x][specialpoint.y]=='@' \
-	|| playfield[specialpoint.x][specialpoint.y]== '*' \
-	|| playfield[specialpoint.x][specialpoint.y]== '#' \
-	|| playfield[specialpoint.x][specialpoint.y]== '$');
+  pthread_t th1,th2;
+  struct parameter *f;
+  f = (struct parameter *)malloc(sizeof(struct parameter));
+  if( f==NULL) {
+    printf("Konnte keinen Speicher reservieren...!!!\n");
+  }
+  f->array=playfield;
+  
+  do  {
+    specialpoint.x= zufallsauswahl(1,len_x);
+    
+    specialpoint.y= zufallsauswahl(1,len_y);
+    
+  } while ( playfield[specialpoint.x][specialpoint.y]=='@' \
+	    || playfield[specialpoint.x][specialpoint.y]== '*'	\
+	    || playfield[specialpoint.x][specialpoint.y]== '#'	\
+	    || playfield[specialpoint.x][specialpoint.y]== '$');
   
   playfield[specialpoint.x][specialpoint.y]='$';
   special_point_active=1;
-    sync_del_special_point=0;
+  sync_del_special_point=0;
   if( pthread_create(&th2,NULL, &special_point_blink,f) != 0) {
-      printf ("Konnte keinen Thread erzeugen\n");
+    printf ("Konnte keinen Thread erzeugen\n");
     exit (EXIT_FAILURE);
   }   
-
+  
   if (pthread_create (&th1,NULL,&del_special_point,f) != 0) {
     printf ("Konnte keinen Thread erzeugen\n");
     exit (EXIT_FAILURE);
@@ -130,9 +130,9 @@ void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
 }  
 
 void *special_point_blink(void *param) {
-    struct parameter *f = (struct parameter *)param;
- //   int sync_blinken=0;
-
+  struct parameter *f = (struct parameter *)param;
+  //   int sync_blinken=0;
+  
   while(special_point_active==1 && sync_del_special_point==0 ) {
     if(f->array[specialpoint.x][specialpoint.y]=='$') {
       f->array[specialpoint.x][specialpoint.y]=' ';
@@ -142,27 +142,27 @@ void *special_point_blink(void *param) {
     }
     usleep(2*game.geschwindigkeit);
   }
-    pthread_exit(NULL);
+  pthread_exit(NULL);
 }
 
 void *del_special_point(void *param) {    
   struct parameter *f = (struct parameter *)param;
   sync_del_special_point=0;
-
+  
   struct snake *zeiger;
   zeiger=anfang; /* Zeiger auf 1. Element */
   while(zeiger->next != NULL)
     zeiger=zeiger->next;  
   
   int len=0;
-
+  
   if(zeiger->xachse>specialpoint.x) {
     len+=(zeiger->xachse-specialpoint.x);
   }
   else if(zeiger->xachse<=specialpoint.x) {
     len+=(specialpoint.x-zeiger->xachse);
   }
-
+  
   if(zeiger->yachse>specialpoint.y) {
     len+=(zeiger->yachse-specialpoint.y);
   }
@@ -171,16 +171,16 @@ void *del_special_point(void *param) {
   }
   len+=10; 
   len*=game.geschwindigkeit;
-
+  
   usleep(len);
-
+  
   if (sync_del_special_point==0) {
     f->array[specialpoint.x][specialpoint.y]=' ';
     sync_del_special_point=1;
   }
   pthread_exit(NULL);
 }
- 
+
 
 void game_over() {
   system("clear");
@@ -207,16 +207,16 @@ void game_over() {
 void create_hindernis(char **playfield) {
   int x,y;
   do {
-	  if(game.level>3) {
-		  x=zufallsauswahl(2,len_x-3);
-		  y=zufallsauswahl(2,len_y-3);
-	  }
-	  else {
-		  x=zufallsauswahl(1,len_x-2);
-		  y=zufallsauswahl(1,len_y-2);
-	  }
+    if(game.level>3) {
+      x=zufallsauswahl(2,len_x-3);
+      y=zufallsauswahl(2,len_y-3);
+    }
+    else {
+      x=zufallsauswahl(1,len_x-2);
+      y=zufallsauswahl(1,len_y-2);
+    }
   } while(playfield[x][y]=='@' || playfield[x][y]=='$' || x%2!=0 );
-	 
+  
   playfield[x][y]='*'; 
 }
 

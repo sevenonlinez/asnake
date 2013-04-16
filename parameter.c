@@ -69,7 +69,7 @@ int check_args(int argc, char *argv[]) {
   int c;
   
   opterr = 0;
-
+  
   while ((c = getopt (argc, argv, "dhs:")) != -1) 
     switch (c) {
     case 'd':
@@ -86,11 +86,11 @@ int check_args(int argc, char *argv[]) {
     case '?':
       if (optopt == 's') {
         fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-      //  return 1;
+	//  return 1;
       }
       else if (isprint (optopt)) {
         fprintf(stderr, "Unknown option '-%c'.\n", optopt);
-      //  return 1;
+	//  return 1;
       }
       else 
         fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
@@ -98,11 +98,11 @@ int check_args(int argc, char *argv[]) {
     default:
       abort ();
     }
-
+  
   // printf ("aflag = %d, bflag = %d, cvalue = %s\n", aflag, bflag, cvalue);
-
+  
   for (index = optind; index < argc; index++) {
     printf("Non-option argument %s\n", argv[index]);
     return -1;
-    }
+  }
 }
