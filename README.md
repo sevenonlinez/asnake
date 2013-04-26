@@ -3,7 +3,7 @@ asnake
 
 Ascii_snake
 
-compile with: 
+compile with:
 	'cd src'
 	'make'
  
@@ -20,6 +20,6 @@ snake control:
 	
 asnake
 Released under the GNU GPL.
--s =SPEED        Set the speed of the snake, default is 5
--h               Show this help screen
+-s =SPEED	Set the speed of the snake, default is 5
+-h		Show this help screen
 
