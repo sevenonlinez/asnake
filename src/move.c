@@ -15,7 +15,7 @@ int hindernis_check;
 int sync_del_special_point;
 
 
-struct koordinaten specialpoint;
+struct koordinaten specialpoint; 
 
 struct snake *anfang;
 struct snake *next;
@@ -49,7 +49,7 @@ void x_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
 	create_hindernis(playfield);
     game.score=game.score+game.level;
   }
-  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$' \
+  if(playfield[zeiger->xachse+richtung][zeiger->yachse]=='$'  \
 	|| zeiger->xachse+richtung == specialpoint.x \
 	&& zeiger->yachse== specialpoint.y ) 
   {
@@ -95,9 +95,9 @@ void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
     game.score=game.score+game.level;
   }
   
-  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$' \
+  if(playfield[zeiger->xachse][zeiger->yachse+richtung]=='$'\
 	|| zeiger->yachse+richtung == specialpoint.y \
-	&& specialpoint.x == zeiger->xachse) {
+	&& specialpoint.x == zeiger->xachse  ) {
     game.score=game.score+2*game.level+1;
     sync_del_special_point=1;
     special_point_active=0;
@@ -116,80 +116,6 @@ void y_move(int richtung, char **playfield) {    // 0: Minux  1: Plus
   }
 } 
 
-void diagonal_1 (int richtung, char **playfield) { // up left to down right
-    struct snake *zeiger;
-    zeiger=anfang; /* Zeiger auf 1. Element */
-    while(zeiger->next != NULL) {
-        zeiger=zeiger->next;
-    }
-    int check=0;
-    anhaengen(zeiger->xachse+richtung, zeiger->yachse+richtung);
-
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]=='*') {
-        check=1;
-        //hindernis_check=0;
-		create_hindernis(playfield);
-    	game.score=game.score+game.level;
-    }
-  
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]=='$' \
-	    || zeiger->yachse+richtung == specialpoint.y \
-	    && specialpoint.x == zeiger->xachse+richtung) {
-        game.score=game.score+2*game.level+1;
-        sync_del_special_point=1;
-        special_point_active=0;
-    }
-    
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]!='#'		\
-         && playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]!= '@') {
-        playfield[zeiger->xachse+richtung][zeiger->yachse+richtung]='@';
-    } 
-    else {
-        game_over();
-    }     
-
-    if(check==0) {
-        del_first(playfield);
-    }
-}  
-
-void diagonal_2 (int richtung, char **playfield) { // up right to down left
-    struct snake *zeiger;
-    zeiger=anfang; /* Zeiger auf 1. Element */
-    while(zeiger->next != NULL) {
-        zeiger=zeiger->next;
-    }
-    int check=0;
-    anhaengen(zeiger->xachse+richtung, zeiger->yachse-richtung);
-
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]=='*') {
-        check=1;
-        //hindernis_check=0;
-		create_hindernis(playfield);
-        game.score=game.score+game.level;
-    }
-  
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]=='$' \
-	    || zeiger->yachse-richtung == specialpoint.y \
-	    && specialpoint.x == zeiger->xachse+richtung) {
-        game.score=game.score+2*game.level+1;
-        sync_del_special_point=1;
-        special_point_active=0;
-    }
-    
-    if(playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]!='#'		\
-         && playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]!= '@') {
-        playfield[zeiger->xachse+richtung][zeiger->yachse-richtung]='@';
-    } 
-    else {
-        game_over();
-    }     
-
-    if(check==0) {
-        del_first(playfield);
-    }
-} 
-
 void move_snake(char **playfield) {
   if(eingabe==100) {    // button d 
     struct snake *zeiger1, *zeiger2;
@@ -206,9 +132,9 @@ void move_snake(char **playfield) {
     }
   }
 
-  else if(eingabe==97) {
+  else if(eingabe==97) {  /* Button a */
     struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zei7ger auf 1. Element */
+    zeiger1=anfang; /* Zeiger auf 1. Element */
     while(zeiger1->next != NULL) {
       zeiger1=zeiger1->next;
     }
@@ -275,98 +201,3 @@ void move_snake(char **playfield) {
 }
 
 
-void move_snake_diagonal(char **playfield) {
-  if(eingabe==100) {    // button d 
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->xachse>=zeiger2->xachse) {
-      //x_move(1,playfield);
-        diagonal_1 (1,playfield);
-    }
-    else if(zeiger1->xachse<zeiger2->xachse) {
-      //x_move(-1,playfield);
-        diagonal_1 (-1,playfield);
-    }
-  }
-
-  else if(eingabe==97) {  // button 'a'
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zei7ger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->xachse<=zeiger2->xachse) {
-      //x_move(-1,playfield);
-        diagonal_1(-1,playfield);
-    }
-    if(zeiger1->xachse>zeiger2->xachse) {
-      //x_move(1,playfield);
-        diagonal_1(1,playfield);
-    }
-  }
-
-  else if(eingabe==119) {  // button 'w'
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse<=zeiger2->yachse) {
-      //y_move(-1,playfield);
-        diagonal_2 (-1,playfield);
-    }
-    if( zeiger1->yachse>zeiger2->yachse) {
-      //y_move(1,playfield);
-        diagonal_2 (1,playfield);
-    }
-  }
-
-
-  else if(eingabe==115) {   // button 's'
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse>=zeiger2->yachse) {
-        //y_move(1,playfield);
-        diagonal_2 (1,playfield);
-    }
-    if( zeiger1->yachse<zeiger2->yachse) {
-        //y_move(-1,playfield);
-        diagonal_2 (-1,playfield);
-    }
-  }
-
-  else {  // doesnt work right at the moment 
-    struct snake *zeiger1, *zeiger2;
-    zeiger1=anfang; /* Zeiger auf 1. Element */
-    while(zeiger1->next != NULL) {
-      zeiger1=zeiger1->next;
-    }
-    zeiger2=zeiger1->previous;
-    if( zeiger1->yachse>zeiger2->yachse) {
-      //y_move(1,playfield);
-        diagonal_1 (1,playfield);
-    }
-    if( zeiger1->yachse<zeiger2->yachse) {
-      //y_move(-1, playfield);
-        diagonal_1 (-1, playfield);
-    }
-    if( zeiger1->xachse<zeiger2->xachse) {
-        //x_move(-1, playfield);
-        diagonal_2 (-1, playfield);
-    }
-    if(zeiger1->xachse>zeiger2->xachse) {
-        //x_move(1, playfield);
-        diagonal_2 (1, playfield);
-    }
-  }
-}

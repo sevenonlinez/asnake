@@ -1,6 +1,7 @@
 CC 	    = gcc
 OBJECTS = display.o main.o move.o dynamical_list.o parameter.o game.o 
 LIBS	= -pthread -lncurses
+DESTDIR	= /usr/bin
 
 asnake:	$(OBJECTS)
 	$(CC) -o $@ $(OBJECTS) $(LIBS)
@@ -18,5 +19,10 @@ parameter.o:        parameter.c parameter.h
 game.o:             game.c game.h
 	$(CC) -c $*.c
 
+install: asnake
+	install asnake ${DESTDIR}
+
 clean:
 	rm *.o asnake
+
+
