@@ -4,14 +4,14 @@
 #include <pthread.h>
 
 struct game_t {
-  int level;
-  int geschwindigkeit;
-  int score;
+    int level;
+    int geschwindigkeit;
+    int score;
 };
 
 struct koordinaten {
-  int x;
-  int y;
+    int x;
+    int y;
 };
 
 extern struct koordinaten specialpoint;
