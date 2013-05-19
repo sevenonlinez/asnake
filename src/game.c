@@ -17,9 +17,9 @@ struct parameter {
 
 struct koordinaten specialpoint;
 
-extern struct snake *anfang;
-extern struct snake *next;
-extern struct snake *ende;
+extern struct snake_element *anfang;
+extern struct snake_element *next;
+extern struct snake_element *ende;
 int incr[2];
 
 int special_point_active;
@@ -122,17 +122,21 @@ void snake_print_out (char **playfield) {
 void create_snake (char **playfield) {
     int mitte[2];
     mitte[0]= len_x / 2;
-    mitte[1] = len_y / 2;
+    mitte[1] = len_y / 2 -2;
 
     anhaengen(mitte);
-    mitte[0]=mitte[0]-2;
-    anhaengen(mitte);
+
     mitte[0]++;
     anhaengen(mitte);
-    mitte[0]=mitte[0]+2;
+
+    mitte[0]++;
     anhaengen(mitte);
 
-    struct snake *zeiger;
+    mitte[0]++;
+    anhaengen(mitte);
+
+
+    struct snake_element *zeiger;
 
     zeiger=anfang;
 
@@ -203,7 +207,7 @@ void *del_special_point(void *param) {
     struct parameter *f = (struct parameter *)param;
     sync_del_special_point=0;
 
-    struct snake *zeiger;
+    struct snake_element *zeiger;
     zeiger=anfang; /* Zeiger auf 1. Element */
     while(zeiger->next != NULL)
         zeiger=zeiger->next;

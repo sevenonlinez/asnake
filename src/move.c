@@ -17,13 +17,13 @@ int sync_del_special_point;
 
 struct koordinaten specialpoint; 
 
-struct snake *anfang;
-struct snake *next;
-struct snake *ende;
+struct snake_element *anfang;
+struct snake_element *next;
+struct snake_element *ende;
 
 
 void move_snake(char **playfield) {
-    struct snake *zeiger;
+    struct snake_element *zeiger;
     zeiger=anfang; /* Zeiger auf 1. Element */
     while(zeiger->next != NULL) {
         zeiger=zeiger->next;

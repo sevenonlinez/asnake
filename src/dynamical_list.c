@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include "dynamical_list.h"
 
-struct snake *anfang=NULL;
-struct snake *next=NULL;
-struct snake *ende=NULL;
+struct snake_element *anfang=NULL;
+struct snake_element *next=NULL;
+struct snake_element *ende=NULL;
 
 
 void anhaengen(int vector[]) {
     int anz_vector = sizeof(vector) / sizeof(int);
-    struct snake *zeiger, *zeiger1;
+    struct snake_element *zeiger, *zeiger1;
 
     /* Wurde schon Speicher für den ende-Zeiger bereitgestellt */
     if(ende == NULL) {
-        if((ende = malloc(sizeof(struct snake))) == NULL) {
+        if((ende = malloc(sizeof(struct snake_element))) == NULL) {
             printf("Konnte keinen Speicherplatz für ende reservieren\n");
             exit(0);
         }
@@ -24,7 +24,7 @@ void anhaengen(int vector[]) {
     if(anfang == NULL) {
         /* Reservieren von Speicherplatz für Struktur
      * für das erste Element der Liste*/
-        if((anfang = malloc(sizeof(struct snake))) == NULL) {
+        if((anfang = malloc(sizeof(struct snake_element))) == NULL) {
             fprintf(stderr, "Kein Speicherplatz vorhanden für anfang\n");
             return;
         }
@@ -44,7 +44,7 @@ void anhaengen(int vector[]) {
 
         /* Speicherplatz für das letzte
      * Element der Liste reservieren und anhängen.   */
-        if((zeiger->next =malloc(sizeof(struct snake))) == NULL) {
+        if((zeiger->next =malloc(sizeof(struct snake_element))) == NULL) {
             fprintf(stderr,"Kein Speicherplatz für das "
                     "letzte Element\n");
             return;
@@ -67,7 +67,7 @@ void anhaengen(int vector[]) {
 }
 
 void del_first(char **playfield) {  //Um das 1. Element der Liste zu löschen
-    struct snake *zeiger;
+    struct snake_element *zeiger;
     zeiger=anfang->next;
     playfield[anfang->vector[0]][anfang->vector[1]]=' ';
     if(zeiger == NULL) {
