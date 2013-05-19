@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
 
     game.score=0;
 
+    incr[0] = 1;
+    incr[1] = 0;
     do {
         if (eingabe == 'p' || eingabe == 'P') {
             do {

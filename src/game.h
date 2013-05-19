@@ -19,6 +19,7 @@ extern struct koordinaten specialpoint;
 extern struct game_t game;
 extern char eingabe;
 extern int sync_del_special_point;
+extern int incr[2];
 
 void *read_stdin();
 void snake_create_playground(char **playfield);

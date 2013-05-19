@@ -20,21 +20,71 @@ struct koordinaten specialpoint;
 extern struct snake *anfang;
 extern struct snake *next;
 extern struct snake *ende;
+int incr[2];
 
 int special_point_active;
-// int sync_del_special_point;
-
 char eingabe;
 
 void *read_stdin () {
     while(0 == 0) {
-        if (read (STDIN_FILENO, &eingabe, 1) < 1) {
+        char tmp;
+        if (read (STDIN_FILENO, &tmp, 1) < 1) {
             printf ("Fehler bei read\n");
             restore_tty (STDIN_FILENO);
             exit (EXIT_FAILURE);
         }
+        switch (tmp) {
+        case 100:	/* Button d */
+            if (incr[0] == -1 && incr[1]==0) {
+                break;
+            }
+            else {
+                incr[0] = 1;
+                incr[1] = 0;
+            }
+            break;
+
+        case 97:	/* Button a */
+            if (incr[0] == 1 && incr[1] == 0) {
+                break;
+            }
+
+            else {
+                incr[0] = -1;
+                incr[1] = 0;
+            }
+            break;
+        case 119:   /* Button w */
+            if (incr[0] == 0 && incr[1] == 1) {
+                break;
+            }
+
+            else {
+                incr[0] = 0;
+                incr[1] = -1;
+            }
+            break;
+        case 115:  /*Button s */
+            if (incr[0] == 0 && incr[1] == -1) {
+                break;
+            }
+            else {
+                incr[0] = 0;
+                incr[1] = 1;
+            }
+            break;
+
+        case 113: /* Button q */
+            eingabe = 'q';
+            break;
+
+        default:
+            break;
+
+        }
+
         usleep(game.geschwindigkeit);
-    }
+    }   /* while loop */
 }
 
 
@@ -70,21 +120,25 @@ void snake_print_out (char **playfield) {
 }
 
 void create_snake (char **playfield) {
-    int mittex = len_x / 2;
-    int mittey = len_y / 2;
+    int mitte[2];
+    mitte[0]= len_x / 2;
+    mitte[1] = len_y / 2;
 
-    anhaengen(mittex-2,mittey);
-    anhaengen(mittex-1,mittey);
-    anhaengen(mittex,mittey);
-    anhaengen(mittex+1,mittey);
+    anhaengen(mitte);
+    mitte[0]=mitte[0]-2;
+    anhaengen(mitte);
+    mitte[0]++;
+    anhaengen(mitte);
+    mitte[0]=mitte[0]+2;
+    anhaengen(mitte);
 
     struct snake *zeiger;
 
     zeiger=anfang;
 
     while( zeiger != NULL) {
-        int x=zeiger->xachse;
-        int y=zeiger->yachse;
+        int x=zeiger->vector[0];
+        int y=zeiger->vector[1];
         playfield[x][y]='@';
         zeiger=zeiger->next;
     }
@@ -127,7 +181,7 @@ void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
         printf ("Konnte keinen Thread erzeugen\n");
         exit (EXIT_FAILURE);
     }
-}  
+}
 
 void *special_point_blink(void *param) {
     struct parameter *f = (struct parameter *)param;
@@ -145,7 +199,7 @@ void *special_point_blink(void *param) {
     pthread_exit(NULL);
 }
 
-void *del_special_point(void *param) {    
+void *del_special_point(void *param) {
     struct parameter *f = (struct parameter *)param;
     sync_del_special_point=0;
 
@@ -156,18 +210,18 @@ void *del_special_point(void *param) {
 
     int len=0;
 
-    if(zeiger->xachse>specialpoint.x) {
-        len+=(zeiger->xachse-specialpoint.x);
+    if(zeiger->vector[0]>specialpoint.x) {
+        len+=(zeiger->vector[0]-specialpoint.x);
     }
-    else if(zeiger->xachse<=specialpoint.x) {
-        len+=(specialpoint.x-zeiger->xachse);
+    else if(zeiger->vector[0]<=specialpoint.x) {
+        len+=(specialpoint.x-zeiger->vector[0]);
     }
 
-    if(zeiger->yachse>specialpoint.y) {
-        len+=(zeiger->yachse-specialpoint.y);
+    if(zeiger->vector[1]>specialpoint.y) {
+        len+=(zeiger->vector[1]-specialpoint.y);
     }
-    else if(zeiger->yachse<=specialpoint.y) {
-        len+=(specialpoint.y-zeiger->yachse);
+    else if(zeiger->vector[1]<=specialpoint.y) {
+        len+=(specialpoint.y-zeiger->vector[1]);
     }
     len+=10;
     len*=game.geschwindigkeit;

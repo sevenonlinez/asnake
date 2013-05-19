@@ -7,8 +7,8 @@ struct snake *next=NULL;
 struct snake *ende=NULL;
 
 
-void anhaengen(int xachse, int yachse) {
-
+void anhaengen(int vector[]) {
+    int anz_vector = sizeof(vector) / sizeof(int);
     struct snake *zeiger, *zeiger1;
 
     /* Wurde schon Speicher für den ende-Zeiger bereitgestellt */
@@ -28,8 +28,10 @@ void anhaengen(int xachse, int yachse) {
             fprintf(stderr, "Kein Speicherplatz vorhanden für anfang\n");
             return;
         }
-        anfang->xachse=xachse;
-        anfang->yachse=yachse;
+        int i;
+        for(i=0; i<anz_vector; i++) {
+            anfang->vector[i]=vector[i];
+        }
         anfang->next=NULL;
         ende=anfang;
         ende->previous=NULL;
@@ -52,8 +54,10 @@ void anhaengen(int xachse, int yachse) {
 
         zeiger=zeiger->next; /* zeiger auf neuen Speicherplatz */
 
-        zeiger->xachse=xachse;
-        zeiger->yachse=yachse;
+        int i;
+        for(i=0; i<anz_vector; i++) {
+            anfang->vector[i]=vector[i];
+        }
 
         zeiger->next=NULL;
         ende=zeiger;
@@ -65,7 +69,7 @@ void anhaengen(int xachse, int yachse) {
 void del_first(char **playfield) {  //Um das 1. Element der Liste zu löschen
     struct snake *zeiger;
     zeiger=anfang->next;
-    playfield[anfang->xachse][anfang->yachse]=' ';
+    playfield[anfang->vector[0]][anfang->vector[1]]=' ';
     if(zeiger == NULL) {
         free(anfang);
         anfang=NULL;
