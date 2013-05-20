@@ -56,20 +56,23 @@ int main(int argc, char *argv[]) {
 
     pthread_t th1=1, th2=2, th3=3;
 
-    if (pthread_create (&th1,NULL,&read_stdin,NULL) != 0) {
-        printf ("Konnte keinen Thread erzeugen\n");
-        exit (EXIT_FAILURE);
-    }
     struct snake snake1;
+    snake1.movement.x=1;
+    snake1.movement.y=0;
     struct point start_point;
     start_point.x = 12;
     start_point.y = 12;
+
+    if (pthread_create (&th1,NULL,&read_stdin,&snake1) != 0) {
+        printf ("Konnte keinen Thread erzeugen\n");
+        exit (EXIT_FAILURE);
+    }
 
     map_create_playground(playfield);
     // create_hindernis(playfield);
     // snake1.create_snake(playfield, start_point);
     // snake_print_out(playfield);
-    snake_create_snake(playfield, start_point, snake1);
+    snake_create_snake(playfield, start_point, &snake1);
 
     game.score=0;
 
@@ -84,7 +87,7 @@ int main(int argc, char *argv[]) {
         snake_print_out(playfield);
         usleep(game.geschwindigkeit);
 
-        snake_move_snake(playfield, snake1);
+        snake_move_snake(playfield, &snake1);
 
     } while (eingabe != 'q');
 

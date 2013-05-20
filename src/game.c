@@ -18,24 +18,68 @@ struct parameter {
 
 struct point specialpoint;
 
-extern struct snake *anfang;
-extern struct snake *next;
-extern struct snake *ende;
-
-int special_point_active;
-// int sync_del_special_point;
-
 char eingabe;
 
-void *read_stdin () {
+void *read_stdin (struct snake *snake1) {
     while(0 == 0) {
-        if (read (STDIN_FILENO, &eingabe, 1) < 1) {
+        char tmp;
+        if (read (STDIN_FILENO, &tmp, 1) < 1) {
             printf ("Fehler bei read\n");
             restore_tty (STDIN_FILENO);
             exit (EXIT_FAILURE);
         }
+        switch (tmp) {
+        case 100:	/* Button d */
+            if (snake1->movement.x == -1 && snake1->movement.y==0) {
+                break;
+            }
+            else {
+                snake1->movement.x = 1;
+                snake1->movement.y = 0;
+            }
+            break;
+
+        case 97:	/* Button a */
+            if (snake1->movement.x == 1 && snake1->movement.y == 0) {
+                break;
+            }
+
+            else {
+                snake1->movement.x = -1;
+                snake1->movement.y = 0;
+            }
+            break;
+        case 119:   /* Button w */
+            if (snake1->movement.x == 0 && snake1->movement.y == 1) {
+                break;
+            }
+
+            else {
+                snake1->movement.x = 0;
+                snake1->movement.y = -1;
+            }
+            break;
+        case 115:  /*Button s */
+            if (snake1->movement.x == 0 && snake1->movement.y == -1) {
+                break;
+            }
+            else {
+                snake1->movement.x = 0;
+                snake1->movement.y = 1;
+            }
+            break;
+
+        case 113: /* Button q */
+            eingabe = 'q';
+            break;
+
+        default:
+            break;
+
+        }
+
         usleep(game.geschwindigkeit);
-    }
+    }   /* while loop */
 }
 
 
@@ -76,7 +120,7 @@ int zufallsauswahl (int minimum, int maximum) {
     return zahl;
 }
 
-void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield, struct snake snake1) {
+void special_point (char **playfield, struct snake *snake1) {
     pthread_t th1,th2;
     struct parameter *f;
     f = (struct parameter *)malloc(sizeof(struct parameter));
@@ -84,7 +128,7 @@ void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield, struct s
         printf("Konnte keinen Speicher reservieren...!!!\n");
     }
     f->array=playfield;
-    f->tail=&snake1.tail;
+    f->tail=snake1->tail;
 
     do  {
         specialpoint.x= zufallsauswahl(1,len_x);
@@ -131,7 +175,7 @@ void *del_special_point(void *param) {
     sync_del_special_point=0;
 
     struct snake_link *zeiger;
-    zeiger=snake1.tail; /* Zeiger auf 1. Element */
+    zeiger=f->tail; /* Zeiger auf 1. Element */
     while(zeiger->previous != NULL)
         zeiger=zeiger->previous;
 
