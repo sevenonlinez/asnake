@@ -13,9 +13,10 @@ struct game_t game;
 
 struct parameter {
     char **array;
+    struct snake_link *tail;
 };
 
-struct koordinaten specialpoint;
+struct point specialpoint;
 
 extern struct snake *anfang;
 extern struct snake *next;
@@ -38,7 +39,7 @@ void *read_stdin () {
 }
 
 
-void snake_create_playground (char **playfield) {
+void map_create_playground (char **playfield) {
     int counter;
     int n,m;
     for(n=0; n < len_x-1; n++) {
@@ -69,34 +70,13 @@ void snake_print_out (char **playfield) {
     }
 }
 
-void create_snake (char **playfield) {
-    int mittex = len_x / 2;
-    int mittey = len_y / 2;
-
-    anhaengen(mittex-2,mittey);
-    anhaengen(mittex-1,mittey);
-    anhaengen(mittex,mittey);
-    anhaengen(mittex+1,mittey);
-
-    struct snake *zeiger;
-
-    zeiger=anfang;
-
-    while( zeiger != NULL) {
-        int x=zeiger->xachse;
-        int y=zeiger->yachse;
-        playfield[x][y]='@';
-        zeiger=zeiger->next;
-    }
-}
-
 int zufallsauswahl (int minimum, int maximum) {
     int bereich = maximum - minimum + 1;
     int zahl = minimum + ( rand() % bereich );
     return zahl;
 }
 
-void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
+void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield, struct snake snake1) {
     pthread_t th1,th2;
     struct parameter *f;
     f = (struct parameter *)malloc(sizeof(struct parameter));
@@ -104,6 +84,7 @@ void special_point (/*pthread_t th1, pthread_t th2,*/ char **playfield) {
         printf("Konnte keinen Speicher reservieren...!!!\n");
     }
     f->array=playfield;
+    f->tail=&snake1.tail;
 
     do  {
         specialpoint.x= zufallsauswahl(1,len_x);
@@ -145,29 +126,29 @@ void *special_point_blink(void *param) {
     pthread_exit(NULL);
 }
 
-void *del_special_point(void *param) {    
+void *del_special_point(void *param) {
     struct parameter *f = (struct parameter *)param;
     sync_del_special_point=0;
 
-    struct snake *zeiger;
-    zeiger=anfang; /* Zeiger auf 1. Element */
-    while(zeiger->next != NULL)
-        zeiger=zeiger->next;
+    struct snake_link *zeiger;
+    zeiger=snake1.tail; /* Zeiger auf 1. Element */
+    while(zeiger->previous != NULL)
+        zeiger=zeiger->previous;
 
     int len=0;
 
-    if(zeiger->xachse>specialpoint.x) {
-        len+=(zeiger->xachse-specialpoint.x);
+    if(zeiger->pos.x>specialpoint.x) {
+        len+=(zeiger->pos.x-specialpoint.x);
     }
-    else if(zeiger->xachse<=specialpoint.x) {
-        len+=(specialpoint.x-zeiger->xachse);
+    else if(zeiger->pos.x<=specialpoint.x) {
+        len+=(specialpoint.x-zeiger->pos.x);
     }
 
-    if(zeiger->yachse>specialpoint.y) {
-        len+=(zeiger->yachse-specialpoint.y);
+    if(zeiger->pos.y>specialpoint.y) {
+        len+=(zeiger->pos.y-specialpoint.y);
     }
-    else if(zeiger->yachse<=specialpoint.y) {
-        len+=(specialpoint.y-zeiger->yachse);
+    else if(zeiger->pos.y<=specialpoint.y) {
+        len+=(specialpoint.y-zeiger->pos.y);
     }
     len+=10;
     len*=game.geschwindigkeit;

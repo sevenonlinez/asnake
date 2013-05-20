@@ -60,10 +60,16 @@ int main(int argc, char *argv[]) {
         printf ("Konnte keinen Thread erzeugen\n");
         exit (EXIT_FAILURE);
     }
-    snake_create_playground(playfield);
-    create_snake(playfield);
-    create_hindernis(playfield);
-    snake_print_out(playfield);
+    struct snake snake1;
+    struct point start_point;
+    start_point.x = 12;
+    start_point.y = 12;
+
+    map_create_playground(playfield);
+    // create_hindernis(playfield);
+    // snake1.create_snake(playfield, start_point);
+    // snake_print_out(playfield);
+    snake_create_snake(playfield, start_point, snake1);
 
     game.score=0;
 
@@ -78,7 +84,7 @@ int main(int argc, char *argv[]) {
         snake_print_out(playfield);
         usleep(game.geschwindigkeit);
 
-        move_snake(playfield);
+        snake_move_snake(playfield, snake1);
 
     } while (eingabe != 'q');
 

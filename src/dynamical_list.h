@@ -1,19 +1,30 @@
 #ifndef _DYNAMICAL_LIST_H
 #define _DYNAMICAL_LIST_H
 
-struct snake {
-    int xachse;
-    int yachse;
-    struct snake *next;
-    struct snake *previous;
+int special_point_active;
+static int counter_special_point=0;
+int hindernis_check;
+int sync_del_special_point;
+
+
+struct point {
+	int x;
+	int y;
 };
 
-extern struct snake *anfang;
-extern struct snake *next;
-extern struct snake *ende;
+struct snake_link {
+	struct point pos;
+    struct snake_link *previous;
+};
 
+struct snake {
+	struct point movement;
+	struct snake_link *tail;
+};
 
-void anhaengen(int xachse, int yachse);
-void del_first(char **playfield);
+void snake_create_snake (char **playfield, struct point start_point, struct snake snake1);
+void snake_del_tail_link (char **playfield, struct snake snake1);
+void snake_append_head_link (char **playfield, struct point pos, struct snake snake1);
+void snake_move_snake(char **playfield, struct snake snake1);
 
 #endif // _DYNAMICAL_LIST_H
