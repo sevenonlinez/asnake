@@ -29,50 +29,52 @@ void *read_stdin (void *param) {
             restore_tty (STDIN_FILENO);
             exit (EXIT_FAILURE);
         }
+
+
         switch (tmp) {
         case 100:	/* Button d */
-            if (snake1->snake->movement.x == -1 && snake1->snake->movement.y==0) {
+            if (snake1->snake1->movement.x == -1 && snake1->snake1->movement.y==0) {
                 break;
             }
             else {
-                snake1->snake->movement.x = 1;
-                snake1->snake->movement.y = 0;
+                snake1->snake1->movement.x = 1;
+                snake1->snake1->movement.y = 0;
             }
             break;
 
         case 97:	/* Button a */
-            if (snake1->snake->movement.x == 1 && snake1->snake->movement.y == 0) {
+            if (snake1->snake1->movement.x == 1 && snake1->snake1->movement.y == 0) {
                 break;
             }
 
             else {
-                snake1->snake->movement.x = -1;
-                snake1->snake->movement.y = 0;
+                snake1->snake1->movement.x = -1;
+                snake1->snake1->movement.y = 0;
             }
             break;
         case 119:   /* Button w */
-            if (snake1->snake->movement.x == 0 && snake1->snake->movement.y == 1) {
+            if (snake1->snake1->movement.x == 0 && snake1->snake1->movement.y == 1) {
                 break;
             }
 
             else {
-                snake1->snake->movement.x = 0;
-                snake1->snake->movement.y = -1;
+                snake1->snake1->movement.x = 0;
+                snake1->snake1->movement.y = -1;
             }
             break;
         case 115:  /*Button s */
-            if (snake1->snake->movement.x == 0 && snake1->snake->movement.y == -1) {
+            if (snake1->snake1->movement.x == 0 && snake1->snake1->movement.y == -1) {
                 break;
             }
             else {
-                snake1->snake->movement.x = 0;
-                snake1->snake->movement.y = 1;
+                snake1->snake1->movement.x = 0;
+                snake1->snake1->movement.y = 1;
             }
             break;
 
         case 114:
-            snake1->snake->movement.x = 1;
-            snake1->snake->movement.y = 1;
+            snake1->snake1->movement.x = 1;
+            snake1->snake1->movement.y = 1;
             break;
 
         case 113: /* Button q */
@@ -82,9 +84,8 @@ void *read_stdin (void *param) {
         default:
             break;
 
+            usleep(game.geschwindigkeit);
         }
-
-        usleep(game.geschwindigkeit);
     }   /* while loop */
 }
 

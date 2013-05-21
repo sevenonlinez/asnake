@@ -11,7 +11,8 @@ struct game_t {
 };
 
 struct param {
-	struct snake *snake;
+    struct snake *snake1;
+    struct snake *snake2;
 };
 
 extern struct point specialpoint;

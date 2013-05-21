@@ -56,12 +56,16 @@ int main(int argc, char *argv[]) {
 
     pthread_t th1=1, th2=2, th3=3;
 
-    struct snake snake1;
+    struct snake snake1, snake2;
     snake1.movement.x=1;
     snake1.movement.y=0;
-    struct point start_point;
-    start_point.x = 12;
-    start_point.y = 12;
+    snake2.movement.x=1;
+    snake2.movement.y=0;
+    struct point start_point_snake1, start_point_snake2;
+    start_point_snake1.x = 12;
+    start_point_snake1.y = 12;
+    start_point_snake2.x = 3;
+    start_point_snake2.y = 19;
 	
 
 	struct param *f;
@@ -69,7 +73,8 @@ int main(int argc, char *argv[]) {
     if( f==NULL) {
         printf("Konnte keinen Speicher reservieren...!!!\n");
     }
-	f->snake = &snake1;
+    f->snake1 = &snake1;
+    f->snake2 = &snake2;
     if (pthread_create (&th1,NULL,&read_stdin,f) != 0) {
         printf ("Konnte keinen Thread erzeugen\n");
         exit (EXIT_FAILURE);
@@ -79,7 +84,8 @@ int main(int argc, char *argv[]) {
     // create_hindernis(playfield);
     // snake1.create_snake(playfield, start_point);
     // snake_print_out(playfield);
-    snake_create_snake(playfield, start_point, &snake1, 3);
+    snake_create_snake(playfield, start_point_snake1, &snake1, 3);
+    snake_create_snake(playfield, start_point_snake2, &snake2, 4);
     create_hindernis(playfield);
 
     game.score=0;
@@ -96,6 +102,7 @@ int main(int argc, char *argv[]) {
         usleep(game.geschwindigkeit);
 
         snake_move_snake(playfield, &snake1);
+        snake_move_snake(playfield, &snake2);
 
     } while (eingabe != 'q');
 
