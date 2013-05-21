@@ -87,10 +87,9 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
 
     int check=0;
     struct point vector;
-    vector.x = zeiger->pos.x - snake1->movement.x;
-    vector.y = zeiger->pos.y - snake1->movement.y;
-    sleep(1);
-    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
+    vector.x = snake1->movement.x + zeiger->pos.x;
+    vector.y = snake1->movement.y + zeiger->pos.y;
+//    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
     snake_append_head_link(playfield,vector, snake1);
     if(playfield[vector.x][vector.y]=='*') {
         check=1;

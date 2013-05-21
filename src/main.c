@@ -62,8 +62,15 @@ int main(int argc, char *argv[]) {
     struct point start_point;
     start_point.x = 12;
     start_point.y = 12;
+	
 
-    if (pthread_create (&th1,NULL,&read_stdin,&snake1) != 0) {
+	struct param *f;
+    f = (struct param *)malloc(sizeof(struct param));
+    if( f==NULL) {
+        printf("Konnte keinen Speicher reservieren...!!!\n");
+    }
+	f->snake = &snake1;
+    if (pthread_create (&th1,NULL,&read_stdin,f) != 0) {
         printf ("Konnte keinen Thread erzeugen\n");
         exit (EXIT_FAILURE);
     }

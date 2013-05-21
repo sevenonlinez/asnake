@@ -10,6 +10,10 @@ struct game_t {
     int score;
 };
 
+struct param {
+	struct snake *snake;
+};
+
 extern struct point specialpoint;
 
 extern struct game_t game;
@@ -18,7 +22,7 @@ extern int sync_del_special_point;
 extern char eingabe;
 
 
-void *read_stdin(struct snake *snake1);
+void *read_stdin(void *param);
 void map_create_playground(char **playfield);
 void snake_print_out(char **playfield);
 void special_point(char **playfield, struct snake *snake1);
