@@ -5,7 +5,8 @@
 
 static int counter_special_point;
 
-void snake_create_snake (char **playfield, struct point start_point, struct snake *snake1) {
+void snake_create_snake
+(char **playfield, struct point start_point, struct snake *snake1, int lenght) {
 
     if((snake1->tail = malloc(sizeof(struct snake_link))) == NULL) {
         fprintf(stderr, "Kein Speicherplatz vorhanden für tail\n");
@@ -28,6 +29,11 @@ void snake_create_snake (char **playfield, struct point start_point, struct snak
     snake1->tail->previous=NULL;
 
     playfield[snake1->tail->pos.x][snake1->tail->pos.y] = '@';
+    int i;
+    for (i = 0; i < lenght; i++) {
+        start_point.x++;
+        snake_append_head_link(playfield, start_point, snake1);
+    }
 
 }
 
@@ -54,6 +60,7 @@ void snake_append_head_link(char **playfield, struct point p, struct snake *snak
 
     zeiger->pos.x=p.x;
     zeiger->pos.y=p.y;
+    playfield[zeiger->pos.x][zeiger->pos.y] = '@';
 
     zeiger->next=NULL;
     snake1->tail=zeiger;
@@ -89,8 +96,8 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
     struct point vector;
     vector.x = snake1->movement.x + zeiger->pos.x;
     vector.y = snake1->movement.y + zeiger->pos.y;
-//    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
-    snake_append_head_link(playfield,vector, snake1);
+    //    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
+
     if(playfield[vector.x][vector.y]=='*') {
         check=1;
 
@@ -116,7 +123,8 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
     }
 
     if(playfield[vector.x][vector.y]!='#' && playfield[vector.x][vector.y]!= '@') {
-        playfield[vector.x][vector.y]='@';
+        //playfield[vector.x][vector.y]='@';
+        snake_append_head_link(playfield,vector, snake1);
     }
     else {
         game_over();

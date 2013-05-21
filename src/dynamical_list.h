@@ -24,7 +24,7 @@ struct snake {
 	struct snake_link *tail;
 };
 
-void snake_create_snake (char **playfield, struct point start_point, struct snake *snake1);
+void snake_create_snake (char **playfield, struct point start_point, struct snake *snake1, int lenght);
 void snake_del_tail_link (char **playfield, struct snake *snake1);
 void snake_append_head_link (char **playfield, struct point pos, struct snake *snake1);
 void snake_move_snake(char **playfield, struct snake *snake1);

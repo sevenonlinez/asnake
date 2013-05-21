@@ -79,7 +79,8 @@ int main(int argc, char *argv[]) {
     // create_hindernis(playfield);
     // snake1.create_snake(playfield, start_point);
     // snake_print_out(playfield);
-    snake_create_snake(playfield, start_point, &snake1);
+    snake_create_snake(playfield, start_point, &snake1, 3);
+    create_hindernis(playfield);
 
     game.score=0;
 

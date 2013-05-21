@@ -21,7 +21,7 @@ struct point specialpoint;
 char eingabe;
 
 void *read_stdin (void *param) {
-	struct param *snake1 = (struct param *)param;
+    struct param *snake1 = (struct param *)param;
     while(0 == 0) {
         char tmp;
         if (read (STDIN_FILENO, &tmp, 1) < 1) {
