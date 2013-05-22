@@ -17,6 +17,7 @@ struct parameter {
 };
 
 struct point specialpoint;
+//struct float_point movement;
 
 char eingabe;
 
@@ -74,8 +75,8 @@ void *read_stdin (void *param) {
 
         case 114:
 
-            snake1->snake1->movement.x = 1.2;
-            snake1->snake1->movement.y = 0.8;
+            snake1->snake1->movement.x = 0.6;
+            snake1->snake1->movement.y = 1.4;
             break;
 
         case 113: /* Button q */

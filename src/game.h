@@ -12,7 +12,7 @@ struct game_t {
 
 struct param {
     struct snake *snake1;
-    struct snake *snake2;
+    //struct snake *snake2;
 };
 
 extern struct point specialpoint;

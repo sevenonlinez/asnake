@@ -61,8 +61,8 @@ int main(int argc, char *argv[]) {
     snake1.movement.y=0;
 
     struct point start_point_snake1;
-    start_point_snake1.x = 12;
-    start_point_snake1.y = 12;
+    start_point_snake1.x = 12.0;
+    start_point_snake1.y = 12.0;
 	
 
 	struct param *f;
@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
     create_hindernis(playfield);
 
     game.score=0;
+
 
     do {
         if (eingabe == 'p' || eingabe == 'P') {

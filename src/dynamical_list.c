@@ -4,6 +4,7 @@
 #include "game.h"
 
 static int counter_special_point;
+//int float_point movement;
 
 void snake_create_snake
 (char **playfield, struct point start_point, struct snake *snake1, int lenght) {
@@ -87,15 +88,19 @@ void snake_del_tail_link(char **playfield, struct snake *snake1) {
 
 
 void snake_move_snake(char **playfield, struct snake *snake1) {
-    static long rest_x = 0;
-    static long rest_y = 0;
+    static float rest_x = 0;
+    static float rest_y = 0;
     struct snake_link *zeiger;
 
     zeiger=snake1->tail; /* Zeiger auf 1. Element */
 
+    float movement[2];
+    movement[0] = snake1->movement.x;
+    movement[1] = snake1->movement.y;
 
     int check=0;
     struct point vector;
+
 
     if (snake1->movement.x + rest_x >= 0.5) {
         if (snake1->movement.x + rest_x >= 1) {
@@ -104,14 +109,14 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
         else if (snake1->movement.x + rest_x < 1) {
             rest_x = 1 - snake1->movement.x;
         }
-        snake1->movement.x = 1;
+        movement[0] = 1;
     }
 
     else if (snake1->movement.x + rest_x < 0.5 && snake1->movement.x + rest_x >= 0) {
         rest_x = snake1->movement.x;
-        snake1->movement.x = 0;
+        movement[0] = 0;
     }
-// -------------------------------------------------
+    // -------------------------------------------------
 
     if (snake1->movement.y + rest_y >= 0.5) {
         if (snake1->movement.y + rest_y >= 1) {
@@ -120,15 +125,15 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
         else if (snake1->movement.y + rest_y < 1) {
             rest_y = 1 - snake1->movement.y;
         }
-        snake1->movement.y = 1;
+        movement[1] = 1;
     }
 
     else if (snake1->movement.y + rest_y < 0.5 && snake1->movement.y + rest_y >= 0) {
         rest_y = snake1->movement.y;
-        snake1->movement.y = 0;
+        movement[1] = 0;
     }
 
-// ---------------------------------------------
+    // ---------------------------------------------
 
     if (snake1->movement.x + rest_x <= -0.5) {
         if (snake1->movement.x + rest_x <= -1) {
@@ -137,15 +142,15 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
         else if (snake1->movement.x + rest_x > -1) {
             rest_x = -1 + + snake1->movement.x;
         }
-        snake1->movement.x = -1;
+        movement[0] = -1;
     }
 
     else if (snake1->movement.x + rest_x > -0.5 && snake1->movement.x < 0) {
         rest_x = snake1->movement.x;
-        snake1->movement.x = 0;
+        movement[0] = 0;
     }
 
-// -------------------------------------------
+    // -------------------------------------------
 
     if (snake1->movement.y + rest_y <= -0.5) {
         if (snake1->movement.y + rest_y <= -1) {
@@ -154,21 +159,19 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
         else if (snake1->movement.y + rest_y > -1) {
             rest_y = -1 + snake1->movement.y;
         }
-        snake1->movement.y = -1;
+        movement[1] = -1;
     }
 
     else if (snake1->movement.y + rest_y > 0.5 && snake1->movement.x < 0) {
         rest_y = snake1->movement.y;
-        snake1->movement.y = 0;
+        movement[1] = 0;
     }
 
-//    sleep(1);
-//    printf("movement.x = %i \n movement.y = %i", snake1->movement.x, snake1->movement.y);
-//    sleep(4);
-//    system("clear");
+        printf("movement.x = %i \n movement.y = %i\n", snake1->movement.x, snake1->movement.y);
 
-    vector.x = snake1->movement.x + zeiger->pos.x;
-    vector.y = snake1->movement.y + zeiger->pos.y;
+
+    vector.x = movement[0] + zeiger->pos.x;
+    vector.y = movement[1] + zeiger->pos.y;
     //    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
 
     if(playfield[vector.x][vector.y]=='*') {
@@ -188,8 +191,8 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
     }
 
     if(playfield[vector.x][vector.y]=='$'\
-            || zeiger->pos.y+snake1->movement.y == specialpoint.y \
-            && specialpoint.x == zeiger->pos.x+snake1->movement.x ) {
+            || zeiger->pos.y+movement[1] == specialpoint.y \
+            && specialpoint.x == zeiger->pos.x+movement[0] ) {
         game.score=game.score+2*game.level+1;
         sync_del_special_point=1;
         special_point_active=0;

@@ -6,15 +6,18 @@ static int counter_special_point=0;
 int hindernis_check;
 int sync_del_special_point;
 
+//extern float_point movement;
+
+
 
 struct point {
 	int x;
 	int y;
 };
 
-struct long_point {
-    long x;
-    long y;
+struct float_point {
+    float x;
+    float y;
 };
 
 struct snake_link {
@@ -24,7 +27,7 @@ struct snake_link {
 };
 
 struct snake {
-    struct long_point movement;
+    struct float_point movement;
     struct snake_link *head;
 	struct snake_link *tail;
 };
