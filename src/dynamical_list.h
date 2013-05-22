@@ -12,6 +12,11 @@ struct point {
 	int y;
 };
 
+struct long_point {
+    long x;
+    long y;
+};
+
 struct snake_link {
 	struct point pos;
     struct snake_link *next;
@@ -19,7 +24,7 @@ struct snake_link {
 };
 
 struct snake {
-	struct point movement;
+    struct long_point movement;
     struct snake_link *head;
 	struct snake_link *tail;
 };

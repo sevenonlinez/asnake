@@ -87,6 +87,8 @@ void snake_del_tail_link(char **playfield, struct snake *snake1) {
 
 
 void snake_move_snake(char **playfield, struct snake *snake1) {
+    static long rest_x = 0;
+    static long rest_y = 0;
     struct snake_link *zeiger;
 
     zeiger=snake1->tail; /* Zeiger auf 1. Element */
@@ -94,6 +96,77 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
 
     int check=0;
     struct point vector;
+
+    if (snake1->movement.x + rest_x >= 0.5) {
+        if (snake1->movement.x + rest_x >= 1) {
+            rest_x = snake1->movement.x + rest_x -1;
+        }
+        else if (snake1->movement.x + rest_x < 1) {
+            rest_x = 1 - snake1->movement.x;
+        }
+        snake1->movement.x = 1;
+    }
+
+    else if (snake1->movement.x + rest_x < 0.5 && snake1->movement.x + rest_x >= 0) {
+        rest_x = snake1->movement.x;
+        snake1->movement.x = 0;
+    }
+// -------------------------------------------------
+
+    if (snake1->movement.y + rest_y >= 0.5) {
+        if (snake1->movement.y + rest_y >= 1) {
+            rest_y = snake1->movement.y + rest_y -1;
+        }
+        else if (snake1->movement.y + rest_y < 1) {
+            rest_y = 1 - snake1->movement.y;
+        }
+        snake1->movement.y = 1;
+    }
+
+    else if (snake1->movement.y + rest_y < 0.5 && snake1->movement.y + rest_y >= 0) {
+        rest_y = snake1->movement.y;
+        snake1->movement.y = 0;
+    }
+
+// ---------------------------------------------
+
+    if (snake1->movement.x + rest_x <= -0.5) {
+        if (snake1->movement.x + rest_x <= -1) {
+            rest_x = snake1->movement.x + rest_x +1;
+        }
+        else if (snake1->movement.x + rest_x > -1) {
+            rest_x = -1 + + snake1->movement.x;
+        }
+        snake1->movement.x = -1;
+    }
+
+    else if (snake1->movement.x + rest_x > -0.5 && snake1->movement.x < 0) {
+        rest_x = snake1->movement.x;
+        snake1->movement.x = 0;
+    }
+
+// -------------------------------------------
+
+    if (snake1->movement.y + rest_y <= -0.5) {
+        if (snake1->movement.y + rest_y <= -1) {
+            rest_y = snake1->movement.y + rest_y +1;
+        }
+        else if (snake1->movement.y + rest_y > -1) {
+            rest_y = -1 + snake1->movement.y;
+        }
+        snake1->movement.y = -1;
+    }
+
+    else if (snake1->movement.y + rest_y > 0.5 && snake1->movement.x < 0) {
+        rest_y = snake1->movement.y;
+        snake1->movement.y = 0;
+    }
+
+//    sleep(1);
+//    printf("movement.x = %i \n movement.y = %i", snake1->movement.x, snake1->movement.y);
+//    sleep(4);
+//    system("clear");
+
     vector.x = snake1->movement.x + zeiger->pos.x;
     vector.y = snake1->movement.y + zeiger->pos.y;
     //    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
