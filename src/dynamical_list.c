@@ -167,7 +167,7 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
         movement[1] = 0;
     }
 
-        printf("movement.x = %i \n movement.y = %i\n", snake1->movement.x, snake1->movement.y);
+        printf("movement.x = %f \n movement.y = %f\n", snake1->movement.x, snake1->movement.y);
 
 
     vector.x = movement[0] + zeiger->pos.x;

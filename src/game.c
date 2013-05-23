@@ -75,8 +75,8 @@ void *read_stdin (void *param) {
 
         case 114:
 
-            snake1->snake1->movement.x = 0.6;
-            snake1->snake1->movement.y = 1.4;
+            snake1->snake1->movement.x = 0.5;
+            snake1->snake1->movement.y = 1;
             break;
 
         case 113: /* Button q */
