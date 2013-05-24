@@ -26,11 +26,9 @@ int main(int argc, char *argv[]) {
     // set the default speed
     set_geschwindigkeit(5);
 
-    int args_check = check_args(argc, argv);
-    if (args_check == -1) {
+    if (check_args(argc, argv) == -1) {
         return -1;
     }
-
     // init playfield value
 
     char **playfield;  // pointer to pointer

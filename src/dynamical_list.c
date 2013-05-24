@@ -100,53 +100,58 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
 
     int check=0;
     struct point vector;
+    printf("Restx = %f  Resty= %f\n", rest_x, rest_y);
+
+    /* Aufrunden:   -rest
+     * Abrunden:    +read
+     */
 
 
-    if (snake1->movement.x + rest_x >= 0.5) {
+    if (snake1->movement.x + rest_x >= 0.5) {  // aufrunden
         if (snake1->movement.x + rest_x >= 1) {
             rest_x = snake1->movement.x + rest_x -1;
         }
         else if (snake1->movement.x + rest_x < 1) {
-            rest_x = 1 - snake1->movement.x;
+            rest_x = snake1->movement.x + rest_x -1;
         }
         movement[0] = 1;
     }
 
     else if (snake1->movement.x + rest_x < 0.5 && snake1->movement.x + rest_x >= 0) {
-        rest_x = snake1->movement.x;
+        rest_x = snake1->movement.x + rest_x;
         movement[0] = 0;
     }
     // -------------------------------------------------
 
     if (snake1->movement.y + rest_y >= 0.5) {
-        if (snake1->movement.y + rest_y >= 1) {
+        if (snake1->movement.y + rest_y > 1) {  // Example: 1.8
             rest_y = snake1->movement.y + rest_y -1;
         }
-        else if (snake1->movement.y + rest_y < 1) {
-            rest_y = 1 - snake1->movement.y;
+        else if (snake1->movement.y + rest_y <= 1) {
+            rest_y = snake1->movement.y +rest_y -1;
         }
         movement[1] = 1;
     }
 
     else if (snake1->movement.y + rest_y < 0.5 && snake1->movement.y + rest_y >= 0) {
-        rest_y = snake1->movement.y;
+        rest_y = snake1->movement.y + rest_y ;
         movement[1] = 0;
     }
 
     // ---------------------------------------------
 
-    if (snake1->movement.x + rest_x <= -0.5) {
-        if (snake1->movement.x + rest_x <= -1) {
+    if (snake1->movement.x + rest_x < -0.5) {
+        if (snake1->movement.x + rest_x < -1) {
             rest_x = snake1->movement.x + rest_x +1;
         }
-        else if (snake1->movement.x + rest_x > -1) {
-            rest_x = -1 + + snake1->movement.x;
+        else if (snake1->movement.x + rest_x >= -1) {  // Example: -0.6
+            rest_x = -1 + snake1->movement.x + rest_x;
         }
         movement[0] = -1;
     }
 
     else if (snake1->movement.x + rest_x > -0.5 && snake1->movement.x < 0) {
-        rest_x = snake1->movement.x;
+        rest_x = snake1->movement.x + rest_x;
         movement[0] = 0;
     }
 
@@ -157,20 +162,21 @@ void snake_move_snake(char **playfield, struct snake *snake1) {
             rest_y = snake1->movement.y + rest_y +1;
         }
         else if (snake1->movement.y + rest_y > -1) {
-            rest_y = -1 + snake1->movement.y;
+            rest_y = -1 + snake1->movement.y + rest_x;
         }
         movement[1] = -1;
     }
 
     else if (snake1->movement.y + rest_y > 0.5 && snake1->movement.x < 0) {
-        rest_y = snake1->movement.y;
+        rest_y = snake1->movement.y + rest_y;
         movement[1] = 0;
     }
 
-        printf("movement.x = %f \n movement.y = %f\n", snake1->movement.x, snake1->movement.y);
+    printf("movement.x = %f \n movement.y = %f\n", snake1->movement.x, snake1->movement.y);
 
 
-    vector.x = movement[0] + zeiger->pos.x;
+
+        vector.x = movement[0] + zeiger->pos.x;
     vector.y = movement[1] + zeiger->pos.y;
     //    printf("vector.x = %i\nvector.y = %i", vector.x, vector.y);
 
